@@ -1,25 +1,25 @@
-package com.br.mariorusso.core;
+package com.br.mariorusso.core.model;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
-public class Publicacao {
-
+public class Usuario {
     private Long id;
-    private String conteudo;
-    private LocalDateTime  dataPublicacao;
-    private Usuario usuario;
+    private String nome;
+    private String email;
+    private String senha;
+
+    private List<Publicacao> posts;
     private List<Comentario> comentarios;
     private List<Like> likes;
 
-    public Publicacao() {
+    public Usuario() {
     }
 
-    public Publicacao(Long id, String conteudo, LocalDateTime  dataPublicacao, Usuario usuario) {
+    public Usuario(Long id, String nome, String email, String senha) {
         this.id = id;
-        this.conteudo = conteudo;
-        this.dataPublicacao = dataPublicacao;
-        this.usuario = usuario;
+        this.nome = nome;
+        this.email = email;
+        this.senha = senha;
     }
 
     public Long getId() {
@@ -30,28 +30,36 @@ public class Publicacao {
         this.id = id;
     }
 
-    public String getConteudo() {
-        return conteudo;
+    public String getNome() {
+        return nome;
     }
 
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public LocalDateTime  getDataPublicacao() {
-        return dataPublicacao;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDataPublicacao(LocalDateTime  dataPublicacao) {
-        this.dataPublicacao = dataPublicacao;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public String getSenha() {
+        return senha;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
+
+    public List<Publicacao> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Publicacao> posts) {
+        this.posts = posts;
     }
 
     public List<Comentario> getComentarios() {
@@ -86,7 +94,7 @@ public class Publicacao {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Publicacao other = (Publicacao) obj;
+        Usuario other = (Usuario) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

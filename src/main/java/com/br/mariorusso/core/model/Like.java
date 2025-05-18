@@ -1,4 +1,4 @@
-package com.br.mariorusso.core;
+package com.br.mariorusso.core.model;
 
 import java.time.LocalDateTime;
 

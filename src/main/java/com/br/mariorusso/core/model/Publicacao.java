@@ -1,24 +1,25 @@
-package com.br.mariorusso.core;
+package com.br.mariorusso.core.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
-public class Comentario {
+public class Publicacao {
 
     private Long id;
     private String conteudo;
-    private LocalDateTime  dataComentario;
+    private LocalDateTime  dataPublicacao;
     private Usuario usuario;
-    private Publicacao publicacao;
+    private List<Comentario> comentarios;
+    private List<Like> likes;
 
-    public Comentario() {
+    public Publicacao() {
     }
 
-    public Comentario(Long id, String conteudo, LocalDateTime  dataComentario, Usuario usuario, Publicacao publicacao) {
+    public Publicacao(Long id, String conteudo, LocalDateTime  dataPublicacao, Usuario usuario) {
         this.id = id;
         this.conteudo = conteudo;
-        this.dataComentario = dataComentario;
+        this.dataPublicacao = dataPublicacao;
         this.usuario = usuario;
-        this.publicacao = publicacao;
     }
 
     public Long getId() {
@@ -37,12 +38,12 @@ public class Comentario {
         this.conteudo = conteudo;
     }
 
-    public LocalDateTime  getDataComentario() {
-        return dataComentario;
+    public LocalDateTime  getDataPublicacao() {
+        return dataPublicacao;
     }
 
-    public void setDataComentario(LocalDateTime  dataComentario) {
-        this.dataComentario = dataComentario;
+    public void setDataPublicacao(LocalDateTime  dataPublicacao) {
+        this.dataPublicacao = dataPublicacao;
     }
 
     public Usuario getUsuario() {
@@ -53,12 +54,20 @@ public class Comentario {
         this.usuario = usuario;
     }
 
-    public Publicacao getPublicacao() {
-        return publicacao;
+    public List<Comentario> getComentarios() {
+        return comentarios;
     }
 
-    public void setPublicacao(Publicacao publicacao) {
-        this.publicacao = publicacao;
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
     }
 
     @Override
@@ -77,7 +86,7 @@ public class Comentario {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Comentario other = (Comentario) obj;
+        Publicacao other = (Publicacao) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
