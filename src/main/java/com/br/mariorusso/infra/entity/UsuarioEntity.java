@@ -7,7 +7,6 @@ import com.br.mariorusso.core.model.Like;
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -31,15 +30,15 @@ public class UsuarioEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public String senha;
 
-    // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
-    // true)
-    // private List<Publicacao> posts;
-    // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
-    // true)
-    // private List<Comentario> comentarios;
-    // @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
-    // true)
-    // private List<Like> likes;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
+    true)
+    public List<Publicacao> publicacaos;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
+    true)
+    public List<Comentario> comentarios;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
+    true)
+    public List<Like> likes;
 
     public static UsuarioEntity fromDomain(Usuario usuario) {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
@@ -50,7 +49,7 @@ public class UsuarioEntity extends PanacheEntityBase {
         return usuarioEntity;
     }
 
-    public Usuario toDomain() {
+    public  Usuario toDomain() {
         Usuario usuario = new Usuario();
         usuario.setId(this.id);
         usuario.setNome(this.nome);
