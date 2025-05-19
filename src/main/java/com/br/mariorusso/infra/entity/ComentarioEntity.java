@@ -22,7 +22,7 @@ public class ComentarioEntity extends PanacheEntityBase {
     public Long id;
 
     @Column(nullable = false)
-    private String conteudo;
+    public String conteudo;
 
     @Column(nullable = false)
     public LocalDateTime dataComentario;
