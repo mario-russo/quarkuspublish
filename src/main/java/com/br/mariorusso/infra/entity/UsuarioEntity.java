@@ -1,5 +1,6 @@
 package com.br.mariorusso.infra.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.br.mariorusso.core.model.Usuario;
@@ -27,28 +28,25 @@ public class UsuarioEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public String senha;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
-    true)
-    public List<PublicacaoEntity> publicacaos;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<PublicacaoEntity> publicacaos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
-    true)
-    public List<ComentarioEntity> comentarios;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<ComentarioEntity> comentarios = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
-    true)
-    public List<LikeEntity> likes;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    public List<LikeEntity> likes = new ArrayList<>();
 
     public static UsuarioEntity fromDomain(Usuario usuario) {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         usuarioEntity.id = usuario.getId();
-        usuarioEntity.nome=usuario.getNome();
-        usuarioEntity.email=usuario.getEmail();
-        usuarioEntity.senha=usuario.getSenha();
+        usuarioEntity.nome = usuario.getNome();
+        usuarioEntity.email = usuario.getEmail();
+        usuarioEntity.senha = usuario.getSenha();
         return usuarioEntity;
     }
 
-    public  Usuario toDomain() {
+    public Usuario toDomain() {
         Usuario usuario = new Usuario();
         usuario.setId(this.id);
         usuario.setNome(this.nome);
