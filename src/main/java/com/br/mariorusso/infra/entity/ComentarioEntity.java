@@ -27,30 +27,27 @@ public class ComentarioEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public LocalDateTime dataComentario;
 
-    @Column(nullable = false)
-    
     @ManyToOne()
-    @JoinColumn(name = "usuario_id")
+    @JoinColumn(name = "usuario_id", nullable = false)
     public UsuarioEntity usuario;
 
-    @Column(nullable = false)
     @ManyToOne()
-    @JoinColumn(name = "publicacao_id")
+    @JoinColumn(name = "publicacao_id", nullable = false)
     public PublicacaoEntity publicacao;
 
-    public static ComentarioEntity fromDomain(Comentario comentario){
+    public static ComentarioEntity fromDomain(Comentario comentario) {
         ComentarioEntity entity = new ComentarioEntity();
 
         entity.conteudo = comentario.getConteudo();
         entity.dataComentario = comentario.getDataComentario();
         entity.id = comentario.getId();
-        entity.publicacao =PublicacaoEntity.fromDomain(comentario.getPublicacao());
+        entity.publicacao = PublicacaoEntity.fromDomain(comentario.getPublicacao());
         entity.usuario = UsuarioEntity.fromDomain(comentario.getUsuario());
 
         return entity;
     }
 
-    public Comentario toDomain(){
+    public Comentario toDomain() {
         Comentario comentario = new Comentario();
 
         comentario.setConteudo(conteudo);
@@ -58,7 +55,7 @@ public class ComentarioEntity extends PanacheEntityBase {
         comentario.setId(id);
         comentario.setPublicacao(publicacao.toDomain());
         comentario.setUsuario(usuario.toDomain());
-         return comentario;
+        return comentario;
     }
 
 }
