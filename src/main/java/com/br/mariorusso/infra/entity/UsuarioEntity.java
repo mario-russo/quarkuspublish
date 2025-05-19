@@ -2,9 +2,6 @@ package com.br.mariorusso.infra.entity;
 
 import java.util.List;
 
-import com.br.mariorusso.core.model.Comentario;
-import com.br.mariorusso.core.model.Like;
-import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -32,19 +29,21 @@ public class UsuarioEntity extends PanacheEntityBase {
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
     true)
-    public List<Publicacao> publicacaos;
+    public List<PublicacaoEntity> publicacaos;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
     true)
-    public List<Comentario> comentarios;
+    public List<ComentarioEntity> comentarios;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval =
     true)
-    public List<Like> likes;
+    public List<LikeEntity> likes;
 
     public static UsuarioEntity fromDomain(Usuario usuario) {
         UsuarioEntity usuarioEntity = new UsuarioEntity();
         usuarioEntity.id = usuario.getId();
         usuarioEntity.nome=usuario.getNome();
-        usuarioEntity.email=usuario.getEmail() ;
+        usuarioEntity.email=usuario.getEmail();
         usuarioEntity.senha=usuario.getSenha();
         return usuarioEntity;
     }

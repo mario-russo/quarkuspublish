@@ -3,7 +3,6 @@ package com.br.mariorusso.infra.entity;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.br.mariorusso.core.model.Comentario;
 import com.br.mariorusso.core.model.Publicacao;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -13,6 +12,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
@@ -30,26 +31,26 @@ public class PublicacaoEntity extends PanacheEntityBase{
     @Column(nullable = false)
     private LocalDateTime  dataPublicacao;
     
-    @Column(nullable = false)
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToOne()
+    @JoinColumn(name = "usuario", nullable = false)
     private UsuarioEntity usuario;
 
-    @OneToMany(mappedBy = "comentario", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comentario> comentarios;
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ComentarioEntity> comentarios;
 
-    @OneToMany(mappedBy = "like", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeEntity> likes;
 
     public static PublicacaoEntity fromDomain(Publicacao publicacao){
 
         PublicacaoEntity entity= new PublicacaoEntity(); 
 
-        entity.comentarios = publicacao.getComentarios();
+        entity.id = publicacao.getId();
         entity.conteudo = publicacao.getConteudo();
         entity.dataPublicacao = publicacao.getDataPublicacao();
-        entity.likes = publicacao.getLikes().stream().map(LikeEntity::fromDomain).toList();
         entity.usuario = UsuarioEntity.fromDomain(publicacao.getUsuario());
-        entity.id = publicacao.getId();
+        entity.likes = publicacao.getLikes().stream().map(LikeEntity::fromDomain).toList();
+        entity.comentarios = publicacao.getComentarios().stream().map(ComentarioEntity::fromDomain).toList();
 
         return entity;
     }
@@ -57,7 +58,7 @@ public class PublicacaoEntity extends PanacheEntityBase{
     public Publicacao toDomain(){
         Publicacao publicacao = new Publicacao();
 
-        publicacao.setComentarios(this.comentarios);
+        publicacao.setComentarios(this.comentarios.stream().map(like -> like.toDomain()).toList());
         publicacao.setConteudo(this.conteudo);
         publicacao.setDataPublicacao(this.dataPublicacao);
         publicacao.setId(this.id);

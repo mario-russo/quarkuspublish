@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "like")
+@Table(name = "curtida")
 public class LikeEntity {
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
