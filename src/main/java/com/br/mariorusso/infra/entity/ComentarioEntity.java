@@ -3,10 +3,13 @@ package com.br.mariorusso.infra.entity;
 import java.time.LocalDateTime;
 
 import com.br.mariorusso.core.model.Comentario;
+import com.br.mariorusso.core.model.Publicacao;
+import com.br.mariorusso.core.model.Usuario;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,11 +30,11 @@ public class ComentarioEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public LocalDateTime dataComentario;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     public UsuarioEntity usuario;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publicacao_id", nullable = false)
     public PublicacaoEntity publicacao;
 
@@ -48,13 +51,22 @@ public class ComentarioEntity extends PanacheEntityBase {
     }
 
     public Comentario toDomain() {
-        Comentario comentario = new Comentario();
+        Usuario user = new Usuario();
+        user.setId(this.usuario.id);
+        user.setNome(this.usuario.nome);
 
-        comentario.setConteudo(conteudo);
-        comentario.setDataComentario(dataComentario);
-        comentario.setId(id);
-        comentario.setPublicacao(publicacao.toDomain());
-        comentario.setUsuario(usuario.toDomain());
+        Publicacao p = new Publicacao();
+        p.setId(this.publicacao.id);
+        p.setUsuario(this.publicacao.usuario.toDomain());
+        p.setConteudo(this.conteudo);
+
+        Comentario comentario = new Comentario();
+        comentario.setId(this.id);
+        comentario.setConteudo(this.conteudo);
+        comentario.setDataComentario(this.dataComentario);
+        comentario.setPublicacao(p);
+        comentario.setUsuario(user);
+
         return comentario;
     }
 
