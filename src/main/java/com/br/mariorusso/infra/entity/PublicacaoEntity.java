@@ -27,20 +27,20 @@ public class PublicacaoEntity extends PanacheEntityBase {
     public Long id;
 
     @Column(nullable = false)
-    private String conteudo;
+    public String conteudo;
 
     @Column(nullable = false)
-    private LocalDateTime dataPublicacao;
+    public LocalDateTime dataPublicacao;
 
     @ManyToOne()
     @JoinColumn(name = "usuario", nullable = false)
-    private UsuarioEntity usuario;
+    public UsuarioEntity usuario;
 
     @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComentarioEntity> comentarios = new ArrayList<>();
 
     @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LikeEntity> likes = new ArrayList<>();
+    public List<LikeEntity> likes = new ArrayList<>();
 
     public static PublicacaoEntity fromDomain(Publicacao publicacao) {
 
