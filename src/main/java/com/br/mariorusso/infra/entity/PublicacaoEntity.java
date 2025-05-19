@@ -1,6 +1,7 @@
 package com.br.mariorusso.infra.entity;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.br.mariorusso.core.model.Publicacao;
@@ -19,31 +20,31 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "publicacao")
-public class PublicacaoEntity extends PanacheEntityBase{
+public class PublicacaoEntity extends PanacheEntityBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
-    
+
     @Column(nullable = false)
     private String conteudo;
-        
+
     @Column(nullable = false)
-    private LocalDateTime  dataPublicacao;
-    
+    private LocalDateTime dataPublicacao;
+
     @ManyToOne()
     @JoinColumn(name = "usuario", nullable = false)
     private UsuarioEntity usuario;
 
     @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ComentarioEntity> comentarios;
+    private List<ComentarioEntity> comentarios = new ArrayList<>();
 
     @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<LikeEntity> likes;
+    private List<LikeEntity> likes = new ArrayList<>();
 
-    public static PublicacaoEntity fromDomain(Publicacao publicacao){
+    public static PublicacaoEntity fromDomain(Publicacao publicacao) {
 
-        PublicacaoEntity entity= new PublicacaoEntity(); 
+        PublicacaoEntity entity = new PublicacaoEntity();
 
         entity.id = publicacao.getId();
         entity.conteudo = publicacao.getConteudo();
@@ -55,7 +56,7 @@ public class PublicacaoEntity extends PanacheEntityBase{
         return entity;
     }
 
-    public Publicacao toDomain(){
+    public Publicacao toDomain() {
         Publicacao publicacao = new Publicacao();
 
         publicacao.setComentarios(this.comentarios.stream().map(like -> like.toDomain()).toList());
@@ -66,5 +67,5 @@ public class PublicacaoEntity extends PanacheEntityBase{
         publicacao.setUsuario(this.usuario.toDomain());
         return publicacao;
     }
-    
+
 }
