@@ -1,6 +1,7 @@
 package com.br.mariorusso.core.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Publicacao {
@@ -9,8 +10,8 @@ public class Publicacao {
     private String conteudo;
     private LocalDateTime  dataPublicacao;
     private Usuario usuario;
-    private List<Comentario> comentarios;
-    private List<Like> likes;
+    private List<Comentario> comentarios= new ArrayList<>();
+    private List<Like> likes = new ArrayList<>();
 
     public Publicacao() {
     }
