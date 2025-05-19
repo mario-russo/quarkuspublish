@@ -9,9 +9,11 @@ import com.br.mariorusso.core.service.ServiceCore;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -42,6 +44,24 @@ public class PublicacaoResource {
 
     public Response ListaPublicacao(){
         List<Publicacao> publicacao = service.findAll();
+
+        List<PublicacaoDtoOut> dto = publicacao.stream().map(PublicacaoDtoOut::dtoOut).toList();
+       
+        return Response.ok(dto).build();
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response deletePublicacao(@PathParam("id") Long id){
+        Publicacao publicacao = service.findById(id);
+        service.delete(publicacao);
+        return Response.ok("Publicacão deletada!").build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public Response buscaPublicacaoPorId(@PathParam("id") Long id){
+        Publicacao publicacao = service.findById(id);
         return Response.ok(publicacao).build();
     }
 }
