@@ -15,4 +15,5 @@ jobs:
       with:
         java-version: '21'
         distribution: 'temurin'
+      working-directory: ./backend
     - run: mvn -B clean verify -Dquarkus.profile=dev
