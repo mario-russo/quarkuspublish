@@ -3,7 +3,10 @@ package com.br.mariorusso.infra.entity;
 import java.time.LocalDateTime;
 
 import com.br.mariorusso.core.model.Like;
+import com.br.mariorusso.core.model.Publicacao;
+import com.br.mariorusso.core.model.Usuario;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,7 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "curtida")
-public class LikeEntity {
+public class LikeEntity extends PanacheEntityBase{
      @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
@@ -43,13 +46,22 @@ public class LikeEntity {
     }
 
     public Like toDomain(){
+        Usuario user = new Usuario();
+        user.setNome(this.usuario.nome); 
+
+        Publicacao p = new Publicacao();
+        p.setConteudo(publicacao.conteudo);
+        p.setId(publicacao.id);
+        p.setUsuario(publicacao.usuario.toDomain());
         
         Like like = new Like();
 
+
         like.setDataLike(dataLike);
         like.setId(id);
-        like.setPublicacao(publicacao.toDomain());
-        like.setUsuario(usuario.toDomain());
+        like.setPublicacao(p);
+        like.setUsuario(user);
+
         return like;
     }
 }
