@@ -1,4 +1,8 @@
 package com.br.mariorusso.interfaces.rest.login;
 
-public record RegisterDto() {
+public record RegisterDto(
+        String nome,
+        String email,
+        String senha
+) {
 }
