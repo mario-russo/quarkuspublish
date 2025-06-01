@@ -8,16 +8,13 @@ import com.br.mariorusso.core.service.ServiceCore;
 import com.br.mariorusso.infra.repository.UsuarioRepository;
 
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 @ApplicationScoped
 public class UsuarioUseCase implements ServiceCore<Usuario>{
 
+    @Inject
     private RepositoryCore<Usuario> repository;
-
-    public UsuarioUseCase(UsuarioRepository repository) {
-        this.repository = repository;
-
-    }
 
     @Override
     public void save(Usuario object) {
