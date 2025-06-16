@@ -11,7 +11,7 @@
 
       <q-card-section>
         <q-form @submit.prevent="handleSubmit" class="q-gutter-y-md">
-          <q-input v-model="form.name" label="Nome Completo" outlined lazy-rules :rules="nameRules">
+          <q-input v-model="form.nome" label="Nome Completo" outlined lazy-rules :rules="nameRules">
             <template v-slot:prepend>
               <q-icon name="person" />
             </template>
@@ -31,7 +31,7 @@
           </q-input>
 
           <q-input
-            v-model="form.password"
+            v-model="form.senha"
             label="Senha"
             outlined
             lazy-rules
@@ -92,13 +92,15 @@
 </template>
 
 <script setup lang="ts">
+import {AuthService} from "../../domain/api/authService"
+
 import { ref, computed, reactive } from 'vue';
+import { useRouter } from 'vue-router';
 // import { useQuasar } from 'quasar';
-// import { useRouter } from 'vue-router';
 // import { useAuthStore } from 'stores/auth';
 
 // const $q = useQuasar();
-// const router = useRouter();
+ const router = useRouter();
 // const authStore = useAuthStore();
 
 interface form {
@@ -113,9 +115,9 @@ const isLoading = ref(false);
 const showPassword = ref(false);
 
 const form = reactive({
-  name: '',
+  nome: '',
   email: '',
-  password: '',
+  senha: '',
   confirmPassword: '',
   terms: false,
 });
@@ -140,32 +142,12 @@ const passwordRules = [
 
 const confirmPasswordRules = computed(() => [
   (val: string) => !!val || 'Confirme sua senha',
-  (val: string) => val === form.password || 'Senhas não coincidem',
-]);
+  (val: string) => val === form.senha])
 
 const handleSubmit = async () => {
-  //   try {
-  //     isLoading.value = true;
-  //     await authStore.register({
-  //       name: form.value.name,
-  //       email: form.value.email,
-  //       password: form.value.password,
-  //     });
-  //     $q.notify({
-  //       type: 'positive',
-  //       message: 'Cadastro realizado com sucesso!',
-  //       icon: 'check_circle',
-  //     });
-  //     router.push('/login');
-  //   } catch (error: any) {
-  //     $q.notify({
-  //       type: 'negative',
-  //       message: error.message || 'Falha no cadastro',
-  //       icon: 'report_problem',
-  //     });
-  //   } finally {
-  //     isLoading.value = false;
-  //   }
+
+  await AuthService.register({email: form.email, nome: form.nome,senha:form.senha})
+  await router.push({path:"/login"})
 };
 </script>
 
