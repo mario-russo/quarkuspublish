@@ -33,23 +33,30 @@ public class ComentarioResource {
 
     @POST 
     public Response salvaComentrio(ComentarioDtoIn dto){
-        Usuario usuario = serviceUser.findById(dto.usuario_id());
-        Publicacao publicacao = servicePub.findById(dto.publicacao_id());
+        try {
+            Usuario usuario = serviceUser.findById(dto.usuario_id());
+            Publicacao publicacao = servicePub.findById(dto.publicacao_id());
 
-        Comentario comentario = new Comentario();
-        comentario.setConteudo(dto.conteudo());
-        comentario.setDataComentario(LocalDateTime.now());
-        comentario.setPublicacao(publicacao);
-        comentario.setUsuario(usuario);
-        service.save(comentario);
+            Comentario comentario = new Comentario();
+            comentario.setConteudo(dto.conteudo());
+            comentario.setDataComentario(LocalDateTime.now());
+            comentario.setPublicacao(publicacao);
+            comentario.setUsuario(usuario);
+            service.save(comentario);
 
-        return Response.ok("comentario salvo").build();
+            return Response.ok("comentario salvo").build();
+
+        }catch (Exception e){
+            return  Response.status(Response.Status.NOT_FOUND).entity("Erro ao comentar!!!").build();
+        }
+
     }
 
     @GET
     public Response buscaTodosComentarios(){
        return Response.ok( service.findAll()).build();
     }
+
     @Path("/{id}")
     @GET
     public Response BuscacomentarioPorId(@PathParam("id")Long id){
