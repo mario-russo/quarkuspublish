@@ -5,7 +5,6 @@ import java.util.List;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.repository.RepositoryCore;
 import com.br.mariorusso.core.service.ServiceCore;
-import com.br.mariorusso.infra.repository.UsuarioRepository;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

@@ -1,23 +1,15 @@
 package com.br.mariorusso.interfaces.rest.login;
 
-import com.br.mariorusso.application.Login;
 import com.br.mariorusso.application.UsuarioUseCase;
 import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.core.service.LoginCore;
 import com.br.mariorusso.core.service.ServiceCore;
-import com.br.mariorusso.infra.entity.UsuarioEntity;
-import com.br.mariorusso.infra.repository.UsuarioRepository;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
-import jakarta.transaction.TransactionScoped;
-import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.CoreMatchers.is;
 
 @QuarkusTest
 class LoginResourceTest {
