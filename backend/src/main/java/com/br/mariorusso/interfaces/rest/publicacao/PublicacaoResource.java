@@ -3,10 +3,14 @@ package com.br.mariorusso.interfaces.rest.publicacao;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
+
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -27,9 +31,14 @@ public class PublicacaoResource {
     ServiceCore<Publicacao> service;
     @Inject
     ServiceCore<Usuario> usuarioService;
+    @Inject
+    @Claim("id")
+    ClaimValue<Long> id;
+
     @POST
+    @RolesAllowed("USER")
     public Response salvaPublicacao(PublicacaDtoIn dto){
-        Usuario usuario = usuarioService.findById(dto.usuario_id());
+        Usuario usuario = usuarioService.findById(id.getValue());
         
         Publicacao publicacao = new Publicacao();
         publicacao.setConteudo(dto.conteudo());
