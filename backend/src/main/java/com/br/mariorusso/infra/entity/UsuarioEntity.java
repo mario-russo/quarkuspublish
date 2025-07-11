@@ -3,6 +3,7 @@ package com.br.mariorusso.infra.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.br.mariorusso.auth.Roles;
 import com.br.mariorusso.core.model.Usuario;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
@@ -27,6 +28,8 @@ public class UsuarioEntity extends PanacheEntityBase {
     public String email;
     @Column(nullable = false)
     public String senha;
+    @Column(nullable = false)
+    public  List<Roles> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<PublicacaoEntity> publicacaos = new ArrayList<>();
@@ -43,6 +46,7 @@ public class UsuarioEntity extends PanacheEntityBase {
         usuarioEntity.nome = usuario.getNome();
         usuarioEntity.email = usuario.getEmail();
         usuarioEntity.senha = usuario.getSenha();
+        usuarioEntity.roles = usuario.getRoles();
         return usuarioEntity;
     }
 
@@ -52,6 +56,7 @@ public class UsuarioEntity extends PanacheEntityBase {
         usuario.setNome(this.nome);
         usuario.setEmail(this.email);
         usuario.setSenha(this.senha);
+        usuario.setRoles(this.roles);
         return usuario;
     }
 
