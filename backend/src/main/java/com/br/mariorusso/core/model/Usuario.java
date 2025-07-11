@@ -1,5 +1,8 @@
 package com.br.mariorusso.core.model;
 
+import com.br.mariorusso.auth.Roles;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
@@ -7,6 +10,7 @@ public class Usuario {
     private String nome;
     private String email;
     private String senha;
+    private List<Roles> roles = new ArrayList<>();
 
     private List<Publicacao> posts;
     private List<Comentario> comentarios;
@@ -103,4 +107,14 @@ public class Usuario {
         return true;
     }
 
+    public List<Roles> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Roles> roles) {
+        this.roles = roles;
+    }
+    public void setRoles(Roles roles) {
+        this.roles.add(roles);
+    }
 }
