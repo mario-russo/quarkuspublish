@@ -1,5 +1,6 @@
 package com.br.mariorusso.application;
 
+import com.br.mariorusso.auth.Roles;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.LoginCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
@@ -23,6 +24,7 @@ public class Login implements LoginCore<UsuarioEntity> {
 
     public  void register (RegisterDto dto){
         Usuario usuario = new Usuario();
+        usuario.setRoles(Roles.USER);
 
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());
