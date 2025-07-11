@@ -24,7 +24,7 @@ class LoginResourceTest {
                 contentType("application/json")
                 .body(dto)
                 .when()
-                .post("/login")
+                .post("/auth/login")
                 .then()
                 .statusCode(404);
 
@@ -45,20 +45,20 @@ class LoginResourceTest {
                 .contentType(ContentType.JSON)
                 .body(dto)
                 .when()
-                .post("/login")
+                .post("/auth/login")
                 .then()
                 .statusCode(200);
     }
     @Test
     @DisplayName("Cadastra um usuário , status 200")
-    void retornaStatus200AposDado(){
+    void retornaStatus200AposDados(){
         RegisterDto dto = new RegisterDto("mario","mario@e.com","123456");
 
         given()
                 .contentType(ContentType.JSON)
                 .body(dto)
                 .when()
-                .post("/login/register")
+                .post("/auth/register")
                 .then()
                 .statusCode(200);
 
