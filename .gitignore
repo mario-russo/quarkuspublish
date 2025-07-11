@@ -180,3 +180,4 @@ Desktop.ini
 /src-cordova/plugins/
 /src-cordova/www/
 /src-cordova/config.xml
+/backend/secrets/
