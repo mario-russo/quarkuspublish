@@ -5,6 +5,7 @@ import java.util.List;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
@@ -20,12 +21,14 @@ import jakarta.ws.rs.core.Response;
 @Path("/usuario")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@RolesAllowed("USER")
 public class UsuarioResource {
 
     @Inject
     ServiceCore<Usuario> service;
 
     @POST
+    @RolesAllowed("ADMIN")
     public Response salvaUsuario(UsuarioDtos dto) {
         service.save(new Usuario(null, dto.nome(), dto.email(), dto.senha()));
         return Response.ok("Usuario salvo com sucesso").build();
@@ -47,6 +50,7 @@ public class UsuarioResource {
 
     @DELETE
     @Path("/{id}")
+    @RolesAllowed("ADMIN")
     @Transactional
     public Response deletarUsuario(@PathParam("id") Long id) {
         Usuario usuarioId = service.findById(id);
@@ -55,6 +59,7 @@ public class UsuarioResource {
     }
 
     @GET
+    @RolesAllowed("ADMIN")
     public Response listarUsuarios() {
         List<Usuario> all = service.findAll();
         List<UsuarioDtoOut> out = all.stream().map(UsuarioDtoOut::dtoOut).toList();
