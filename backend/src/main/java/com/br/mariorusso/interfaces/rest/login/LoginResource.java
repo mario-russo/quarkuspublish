@@ -1,6 +1,8 @@
 package com.br.mariorusso.interfaces.rest.login;
 
 import com.br.mariorusso.application.Login;
+import com.br.mariorusso.auth.JwtService;
+import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.LoginCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
 
@@ -13,27 +15,36 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 
-@Path("/login")
+import java.util.Map;
+
+
+@Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class LoginResource {
 
-
     final LoginCore<UsuarioEntity> loginUsuario;
+    final JwtService jwtService;
 
     @Inject
-    public LoginResource(LoginCore<UsuarioEntity> loginUsuario) {
+    public LoginResource(LoginCore<UsuarioEntity> loginUsuario, JwtService jwt) {
         this.loginUsuario = loginUsuario;
+        this.jwtService = jwt;
     }
 
     @POST
+    @Path("/login")
     public Response login(LoginDtoIn login){
         try{
-            UsuarioEntity login2 = loginUsuario.login(login.senha(), login.email());
-            return Response.ok( new LoginDtoOut(login2.email, login2.nome)).build();
+            UsuarioEntity usuario = loginUsuario.login(login.senha(), login.email());
+            Usuario user = usuario.toDomain();
+
+
+            String token = jwtService.generateToken(user);
+            return Response.ok(Map.of("token",token)).build();
 
         } catch (Exception e) {
-            return  Response.status(Response.Status.NOT_FOUND).entity("Usuário não encontrado").build();
+            return  Response.status(Response.Status.NOT_FOUND).entity(Map.of("Erro","Usuário não encontrado!!!")).build();
         }
 
 
