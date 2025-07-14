@@ -24,6 +24,7 @@ jobs:
 
   env:
       DB_USER: postgres
+      BANCO_DE_DADO: postgresql
       DB_PASSWORD: postgres
       DB_URL: jdbc:postgresql://localhost:5432/meubanco
       PRIVATE_KEY: secrets/private.pem
