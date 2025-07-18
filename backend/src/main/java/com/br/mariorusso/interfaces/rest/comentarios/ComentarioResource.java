@@ -3,6 +3,9 @@ package com.br.mariorusso.interfaces.rest.comentarios;
 import java.time.LocalDateTime;
 
 
+import com.br.mariorusso.application.ComentarioUseCase;
+import com.br.mariorusso.application.PublicacaoUseCase;
+import com.br.mariorusso.application.UsuarioUseCase;
 import com.br.mariorusso.core.model.Comentario;
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
@@ -22,13 +25,17 @@ import jakarta.ws.rs.core.Response;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class ComentarioResource {
-    
+
+    private final ServiceCore<Comentario> service;
+    private final ServiceCore<Publicacao> servicePub;
+    private final ServiceCore<Usuario> serviceUser;
+
     @Inject
-    ServiceCore<Comentario> service;
-    @Inject
-    ServiceCore<Publicacao> servicePub;
-    @Inject
-    ServiceCore<Usuario> serviceUser;
+    public  ComentarioResource(ComentarioUseCase service, PublicacaoUseCase servicePub, UsuarioUseCase serviceUser){
+        this.service = service;
+        this.servicePub = servicePub;
+        this.serviceUser = serviceUser;
+    }
 
 
     @POST 
