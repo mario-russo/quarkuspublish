@@ -36,7 +36,7 @@ public class LoginResource {
     @Path("/login")
     public Response login(LoginDtoIn login){
         try{
-            UsuarioEntity usuario = loginUsuario.login(login.senha(), login.email());
+            UsuarioEntity usuario = loginUsuario.login(login.email(), login.senha());
             Usuario user = usuario.toDomain();
 
 

@@ -17,7 +17,7 @@ public class Login implements LoginCore<UsuarioEntity> {
     UsuarioUseCase usuarioUseCase;
 
     @Override
-    public UsuarioEntity login(String senha, String email) {
+    public UsuarioEntity login(String email, String senha) {
         UsuarioEntity usuario =  UsuarioEntity.find("email= ?1 AND senha= ?2", email,senha).firstResult();
         return usuario;
     }
