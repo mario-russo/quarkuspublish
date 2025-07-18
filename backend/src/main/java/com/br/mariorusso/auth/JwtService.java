@@ -12,14 +12,8 @@ import java.util.Set;
 @ApplicationScoped
 public class JwtService {
 
-    
-    
-    @ConfigProperty(name = "mp.jwt.verify.issuer")
-    String issuer; // vai conter algo como: file:secrets/private.pem
-
-    @ConfigProperty(name = "private-key")
-    private String privateKey;
-
+    @ConfigProperty(name = "mp.jwt.verify.issuer", defaultValue = "mario-russo")
+    String issuer;
 
     public String generateToken(Usuario usuario) {
         List<String> roles = usuario.getRoles().stream()
@@ -31,6 +25,6 @@ public class JwtService {
                 .groups(Set.copyOf(roles))
                 .claim("id", usuario.getId())
                 .expiresIn(Duration.ofDays(7))
-                .sign(this.privateKey);
+                .sign();
     }
 }
