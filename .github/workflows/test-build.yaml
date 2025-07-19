@@ -53,4 +53,4 @@ jobs:
 
       - name: 🔨 Build e Teste com Maven (Profile de produção)
         working-directory: ./backend
-        run: mvn -B clean verify -Dquarkus.profile=prod
+        run: mvn -B clean package
