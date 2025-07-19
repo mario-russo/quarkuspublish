@@ -11,11 +11,11 @@ interface Register{
     nome:string
 }
 
-const path = "/login"
+const path = "/auth"
 
 export const AuthService = {
     async login(login: Login){
-       return api.post(path,login)
+       return api.post(path+"/login",login)
     },
     async register (register: Register){
         return api.post(path + "/register", register)

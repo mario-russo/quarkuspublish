@@ -26,6 +26,7 @@
           </div>
         </q-form>
       </q-card-section>
+      {{ ambiente }}
 
       <q-card-section class="text-center q-pt-none">
         <p class="text-caption">
@@ -79,8 +80,9 @@ const passwordRules = [
 
 
 const ambiente = computed(() => {
-  return import.meta.env.VITE_API_URL;
+  return import.meta.env.VITE_APP_NAME;
 })
+
 async function login() {
   await AuthService.login({ email: form.value.email, senha: form.value.password })
   await router.push({path:"/"})
