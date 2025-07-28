@@ -1,7 +1,9 @@
 package com.br.mariorusso.infra.entity;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import com.br.mariorusso.auth.Roles;
 import com.br.mariorusso.core.model.Usuario;
@@ -29,8 +31,7 @@ public class UsuarioEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public String senha;
     @Column(nullable = false)
-    public  List<Roles> roles = new ArrayList<>();
-
+    public Set<Roles> roles = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     public List<PublicacaoEntity> publicacaos = new ArrayList<>();
 

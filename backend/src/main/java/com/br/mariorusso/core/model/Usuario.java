@@ -3,14 +3,16 @@ package com.br.mariorusso.core.model;
 import com.br.mariorusso.auth.Roles;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class Usuario {
     private Long id;
     private String nome;
     private String email;
     private String senha;
-    private List<Roles> roles = new ArrayList<>();
+    private Set<Roles> roles = new HashSet<>();
 
     private List<Publicacao> posts;
     private List<Comentario> comentarios;
@@ -107,14 +109,13 @@ public class Usuario {
         return true;
     }
 
-    public List<Roles> getRoles() {
+    public Set<Roles> getRoles() {
         return roles;
-    }
-
-    public void setRoles(List<Roles> roles) {
-        this.roles = roles;
     }
     public void setRoles(Roles roles) {
         this.roles.add(roles);
+    }
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
     }
 }
