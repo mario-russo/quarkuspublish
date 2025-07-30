@@ -6,7 +6,6 @@ import com.br.mariorusso.application.UsuarioUseCase;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
 
-import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
