@@ -33,44 +33,62 @@ public class PublicacaoResource {
     ServiceCore<Usuario> usuarioService;
     @Inject
     @Claim("id")
-    ClaimValue<Long> id;
+
+    ClaimValue<Long> clamId;
 
     @POST
     @RolesAllowed("USER")
-    public Response salvaPublicacao(PublicacaDtoIn dto){
-        Usuario usuario = usuarioService.findById(id.getValue());
-        
+    public Response salvaPublicacao(PublicacaDtoIn dto) {
+        Usuario usuario = usuarioService.findById(clamId.getValue());
         Publicacao publicacao = new Publicacao();
         publicacao.setConteudo(dto.conteudo());
         publicacao.setDataPublicacao(LocalDateTime.now());
         publicacao.setUsuario(usuario);
-        
         service.save(publicacao);
         return Response.ok("Publicação salva com sucesso!!!").build();
     }
 
     @GET
+    public Response ListaPublicacao() {
+        try {
+            List<Publicacao> publicacao = service.findAll();
 
-    public Response ListaPublicacao(){
-        List<Publicacao> publicacao = service.findAll();
+            List<PublicacaoDtoOut> dto = publicacao.stream().map(PublicacaoDtoOut::dtoOut).toList();
 
-        List<PublicacaoDtoOut> dto = publicacao.stream().map(PublicacaoDtoOut::dtoOut).toList();
-       
-        return Response.ok(dto).build();
+            return Response.ok(dto).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Nenhuma Publicação encontrada").build();
+        }
+
+
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deletePublicacao(@PathParam("id") Long id){
-        Publicacao publicacao = service.findById(id);
-        service.delete(publicacao);
-        return Response.ok("Publicacão deletada!").build();
+    public Response deletePublicacao(@PathParam("id") Long id) {
+        try {
+            Publicacao publicacao = service.findById(id);
+            service.delete(publicacao);
+            return Response.ok("Publicacão deletada!").build();
+        }catch (Exception e ){
+            return Response.status(Response.Status.NOT_FOUND).entity("Nenhuma publicação encontrada").build();
+        }
+
+
     }
 
     @GET
     @Path("/{id}")
-    public Response buscaPublicacaoPorId(@PathParam("id") Long id){
-        Publicacao publicacao = service.findById(id);
-        return Response.ok(publicacao).build();
+    public Response buscaPublicacaoPorId(@PathParam("id") Long id) {
+
+        try{
+            Publicacao publicacao = service.findById(id);
+            return Response.ok(publicacao).build();
+
+        } catch (Exception e) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Nenhuma publicação encontrada").build();
+        }
+
     }
 }
