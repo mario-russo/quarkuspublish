@@ -1,18 +1,56 @@
 name: Quarkus Build and Test
 
 on: 
-    push:
-      branches: [ main, develop ]
-    pull_request:
-      branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
 
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:15-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: meubanco
+        options: >-
+          --health-cmd="pg_isready -U postgres"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DB_USER: postgres
+      BANCO_DE_DADO: postgresql
+      DB_PASSWORD: postgres
+      DB_URL: jdbc:postgresql://localhost:5432/meubanco
+      PRIVATE_KEY: secrets/private.pem
+      ISSUER: example-issuer
+      PUBLIC_KEY: secrets/public.pem
+
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-java@v3
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-    - run: mvn -B clean verify
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: ☕ Configurar Java
+        uses: actions/setup-java@v3
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: 🔐 Criar arquivos de chave JWT
+        working-directory: ./backend
+        run: |
+          mkdir -p secrets
+          echo "${{ secrets.PRIVATE_KEY }}" > secrets/private.pem
+          echo "${{ secrets.PUBLIC_KEY }}" > secrets/public.pem
+
+      - name: 🔨 Build e Teste com Maven (Profile de produção)
+        working-directory: ./backend
+        run: mvn -B package -Dnative

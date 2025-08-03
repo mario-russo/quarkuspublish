@@ -43,3 +43,143 @@ nb-configuration.xml
 /.quarkus/cli/plugins/
 # TLS Certificates
 .certs/
+
+
+# Diretórios principais
+node_modules/
+dist/
+.quasar/
+.vscode/
+.idea/
+.DS_Store
+*.log
+*.tmp
+*.tmp.*
+.temp/
+.tmp/
+coverage/
+
+# Dependências
+/.pnpm-store
+/.yarn
+/.yarn-cache
+/.pnp.*
+.yarn-integrity
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Quasar
+/src-cordova/
+/src-electron/
+/src-pwa/
+/src-ssr/
+/src-bex/
+/src-capacitor/
+
+# Vue
+.env.local
+.env.*.local
+*.local
+
+# Editor/IDE
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+*.swp
+*.swo
+*.sublime-*
+*.code-workspace
+
+# System Files
+Thumbs.db
+ehthumbs.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Test artifacts
+/junit.xml
+/coverage/
+/nyc_output/
+*.lcov
+
+# Debug logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Build files
+/dist/
+/dist-ssr/
+/*.js
+/*.map
+/*.css
+/*.html
+
+# Quasar dev server
+/quasar.dev/
+
+# Cache
+.cache/
+.turbo/
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+.env.test
+
+# TypeScript
+*.tsbuildinfo
+
+# Editor
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# MacOS
+.DS_Store
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
+.directory
+.Trash-*
+.nfs*
+
+# Cypress
+/cypress/screenshots/
+/cypress/videos/
+/cypress/downloads/
+/cypress/fixtures/example.json
+
+# Jest
+/jest-report/
+/jest-results.json
+
+# Visual Studio Code
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# Quasar Extras
+/src-cordova/platforms/
+/src-cordova/plugins/
+/src-cordova/www/
+/src-cordova/config.xml
+
+#Chaves para backend
+/backend/secrets/
