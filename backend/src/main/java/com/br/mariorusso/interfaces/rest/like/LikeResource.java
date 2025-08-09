@@ -7,6 +7,7 @@ import com.br.mariorusso.core.model.Like;
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -16,6 +17,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
 
 @Path("/like")
 @Produces(MediaType.APPLICATION_JSON)
@@ -29,18 +32,30 @@ public class LikeResource {
     @Inject
     ServiceCore<Usuario> serviceUser;
 
-    @POST 
-    public Response salvaLikes(LikeDtoIn dto){
-        Usuario usuario = serviceUser.findById(dto.usuario_id());
-        Publicacao publicacao = servicePub.findById(dto.publicacao_id());
+    @Claim("id")
+    ClaimValue<Long> idClaim;
 
-       Like like = new Like();
+    @POST
+    @RolesAllowed("USER")
+    public Response salvaLikes(LikeDtoIn dto) {
+        try {
+            Usuario usuario = serviceUser.findById(idClaim.getValue());
 
-       like.setDataLike(LocalDateTime.now());
-       like.setPublicacao(publicacao);
-       like.setUsuario(usuario);
-       service.save(like);
-       return Response.ok("Publicação Curtida").build();
+            Publicacao publicacao = servicePub.findById(dto.publicacao_id());
+
+            Like like = new Like();
+
+            like.setDataLike(LocalDateTime.now());
+            like.setPublicacao(publicacao);
+            like.setUsuario(usuario);
+            service.save(like);
+            return Response.ok("Publicação Curtida").build();
+
+
+        } catch (Exception e) {
+            return Response.status(404).build();
+        }
+
     }
 
     @GET
@@ -52,7 +67,14 @@ public class LikeResource {
     @Path("/{id}")
     @GET
     public Response BuscaLikePorId(@PathParam("id") Long id) {
-        Like byId = service.findById(id);
-        return Response.ok(byId).build();
+
+        try {
+            Like byId = service.findById(id);
+            return Response.ok(byId).build();
+
+        } catch (Exception e) {
+            return Response.status(404).entity("sem curtida").build();
+        }
+
     }
 }
