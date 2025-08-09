@@ -15,7 +15,7 @@ public class UserFactoryTest {
 
     public static Usuario usuario() {
         Usuario usuario = new Usuario(null, NOME, EMAIL, PASSWORD);
-        usuario.setRoles(ROLES);
+        usuario.addRoles(ROLES);
         return usuario;
     }
     public static Usuario loginUser(){

@@ -31,9 +31,9 @@ public class PublicacaoResource {
     ServiceCore<Publicacao> service;
     @Inject
     ServiceCore<Usuario> usuarioService;
+
     @Inject
     @Claim("id")
-
     ClaimValue<Long> clamId;
 
     @POST
