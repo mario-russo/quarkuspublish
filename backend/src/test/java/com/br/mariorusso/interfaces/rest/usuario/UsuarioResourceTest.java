@@ -16,6 +16,8 @@ import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.EnumSet;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalTo;
 
@@ -56,11 +58,8 @@ class UsuarioResourceTest {
 
     @Test
     void atualiza_usuario_pelo_id() {
-        Usuario usuario = new Usuario(null, NOME, "email@gmail.com", SENHA);
-        usuario.setRoles(Roles.USER);
-        repositoryCore.save(usuario);
-
-        UsuarioEntity user = login.login("email@gmail.com", SENHA);
+        UsuarioEntity user = login.login(EMAIL, SENHA);
+        user.roles = EnumSet.of(Roles.USER);
         token = TokenFactory.of(user.toDomain());
 
 
@@ -89,6 +88,7 @@ class UsuarioResourceTest {
                 .then()
                 .statusCode(200);
     }
+
     @Test
     void retorna_erro_dado_id_invalido() {
 
@@ -125,6 +125,7 @@ class UsuarioResourceTest {
                 .body(equalTo("Usuario deletado com sucesso"));
 
     }
+
     @Test
     @TestSecurity(user = "mario russo", roles = {"ADMIN"})
     void dado_id_usuario_invalido_erro_404() {

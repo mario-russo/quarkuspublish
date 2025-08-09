@@ -22,7 +22,7 @@ import jakarta.persistence.Table;
 @Table(name = "usuarios")
 public class UsuarioEntity extends PanacheEntityBase {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
     @Column(nullable = false)
     public String nome;
