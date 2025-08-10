@@ -22,6 +22,7 @@ public class PostgresManagerTest implements QuarkusTestResourceLifecycleManager 
         config.put("quarkus.datasource.password", POSTGRES.getPassword());
         config.put("quarkus.datasource.db-kind", "postgresql");
         config.put("quarkus.hibernate-orm.database.generation", "drop-and-create");
+        config.put("quarkus.hibernate-orm.sql-load-script","import.sql");
         return config;
     }
 

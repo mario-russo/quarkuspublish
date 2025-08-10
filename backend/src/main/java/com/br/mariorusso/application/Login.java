@@ -24,7 +24,7 @@ public class Login implements LoginCore<UsuarioEntity> {
 
     public  void register (RegisterDto dto){
         Usuario usuario = new Usuario();
-        usuario.setRoles(Roles.USER);
+        usuario.addRoles(Roles.USER);
 
         usuario.setNome(dto.nome());
         usuario.setEmail(dto.email());

@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 public class PublicacaoEntity extends PanacheEntityBase {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
     @Column(nullable = false)
@@ -33,7 +33,7 @@ public class PublicacaoEntity extends PanacheEntityBase {
     public LocalDateTime dataPublicacao;
 
     @ManyToOne()
-    @JoinColumn(name = "usuario", nullable = false)
+    @JoinColumn(name = "usuario_id", nullable = false)
     public UsuarioEntity usuario;
 
     @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)

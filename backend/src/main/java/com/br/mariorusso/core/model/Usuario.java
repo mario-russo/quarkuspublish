@@ -111,7 +111,7 @@ public class Usuario {
     public Set<Roles> getRoles() {
         return roles;
     }
-    public void setRoles(Roles roles) {
+    public void addRoles(Roles roles) {
         this.roles.add(roles);
     }
     public void setRoles(Set<Roles> roles) {
