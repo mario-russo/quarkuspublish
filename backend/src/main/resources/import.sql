@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS publicacao (
     conteudo TEXT NOT NULL,
     dataPublicacao TIMESTAMP NOT NULL,
     usuario_id INTEGER,
-    FOREIGN KEY (usuario_id) REFERENCES usuario(id)
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
 
 -- Tabela de comentários
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS comentario (
     id SERIAL PRIMARY KEY,
     conteudo TEXT NOT NULL,
     dataComentario TIMESTAMP NOT NULL,
-    usuario_id INTEGER NOT NULL REFERENCES usuario(id) ON DELETE CASCADE,
+    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
     publicacao_id INTEGER NOT NULL REFERENCES publicacao(id) ON DELETE CASCADE
 );
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS comentario (
 CREATE TABLE IF NOT EXISTS curtida (
     id SERIAL PRIMARY KEY,
     dataLike TIMESTAMP NOT NULL,
-    usuario_id INTEGER NOT NULL REFERENCES usuario(id) ON DELETE CASCADE,
+    usuario_id INTEGER NOT NULL REFERENCES usuarios(id) ON DELETE CASCADE,
     publicacao_id INTEGER NOT NULL REFERENCES publicacao(id) ON DELETE CASCADE
 );
 
