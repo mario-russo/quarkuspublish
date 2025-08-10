@@ -84,6 +84,7 @@ class PublicacaoResourceTest {
 
     @Test
     @DisplayName("Dado ID que não esteja no banco de dados erro 404 para deletar")
+
     void dado_id_invalido_nenhuma_publicacao_encontrada() {
         given()
                 .pathParam("id", 100)
