@@ -94,7 +94,6 @@ class PublicacaoResourceTest {
                 .statusCode(404)
                 .body(is("Nenhuma publicação encontrada"));
     }
-
     @Test
     @DisplayName("dado um id valido no banco returna uma publicaçao")
     void busca_publicacao_por_id_status_200() {
