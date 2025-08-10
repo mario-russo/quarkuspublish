@@ -83,7 +83,8 @@ class PublicacaoResourceTest {
 
 
     @Test
-    @DisplayName("Dado ID que não esteja no banco de dados erro 404")
+    @DisplayName("Dado ID que não esteja no banco de dados erro 404 para deletar")
+
     void dado_id_invalido_nenhuma_publicacao_encontrada() {
         given()
                 .pathParam("id", 100)
@@ -93,6 +94,32 @@ class PublicacaoResourceTest {
                 .statusCode(404)
                 .body(is("Nenhuma publicação encontrada"));
     }
+    @Test
+    @DisplayName("dado um id valido no banco returna uma publicaçao")
+    void busca_publicacao_por_id_status_200() {
 
+        Long id = 1L;
+
+        given()
+                .pathParam("id", id)
+                .when()
+                .get("/publicacao/{id}")
+                .then()
+                .statusCode(200)
+                .body("conteudo", equalTo("Conteúdo inicial"));
+
+    }
+    @Test
+    void dado_id_invalido_retorna_404(){
+        Long id = 100L;
+
+        given()
+                .pathParam("id", id)
+                .when()
+                .get("/publicacao/{id}")
+                .then()
+                .statusCode(404)
+                .body(equalTo("Nenhuma publicação encontrada"));
+    }
 
 }
