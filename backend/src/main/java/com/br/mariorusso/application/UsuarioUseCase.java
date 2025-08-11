@@ -10,7 +10,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 @ApplicationScoped
-public class UsuarioUseCase implements ServiceCore<Usuario>{
+public class UsuarioUseCase implements ServiceCore<Usuario> {
 
     @Inject
     private RepositoryCore<Usuario> repository;
@@ -32,7 +32,7 @@ public class UsuarioUseCase implements ServiceCore<Usuario>{
 
     @Override
     public Usuario findById(Long id) {
-         Usuario usuario = repository.findById(id);
+        Usuario usuario = repository.findById(id);
         return usuario;
     }
 
@@ -41,5 +41,4 @@ public class UsuarioUseCase implements ServiceCore<Usuario>{
         List<Usuario> usuarios = repository.findAll();
         return usuarios;
     }
-    
 }
