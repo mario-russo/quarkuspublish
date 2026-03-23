@@ -65,6 +65,31 @@ O projeto utiliza **JUnit 5** e **Mockito** para testes de unidade. Os casos de 
 - Quarkus CLI (opcional)
 
 ### Executar a aplicação:
-
+ Para roda a aplicação completa bastar ter o docker e docker compose instalado
+ com o comando 
 ```bash
-./mvnw compile quarkus:dev
+docker compose up --build 
+
+pode ser acessar em http://localhost:9000/
+
+
+
+### Env de exemplo para o backend
+a parte do backend está configurada para receber o banco de dados.
+tem criando um env passando o as variavel como segui o exempplo lembando que caso ele não
+tenha uma as keys usuara as que estão no projeto 
+para ter acessar ao backend pode ir para http://localhost:8080
+```.env
+KIND=postgresql
+DB_USER=mario-russo
+DB_PASSWORD=mario-russo
+DB_URL=jdbc:postgresql://localhost:5432/banco
+
+PUBLIC_KEY=classpath:secrets/publicKey.pem
+PRIVATE_KEY=classpath:secrets/privateKey.pem
+
+### Env para FrontEnd
+env apenas para conectar ao backend 
+para acessar a aplicação frontend pode ir para  http://localhost:9000/
+```bash
+VITE_API_URL = http://localhost:8080/
