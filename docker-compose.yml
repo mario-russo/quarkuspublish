@@ -1,0 +1,61 @@
+version: '3.9'
+services:
+  postgres:
+    image: postgres:17
+    container_name: postgres-dev
+    restart: always
+    environment:
+      POSTGRES_DB: banco
+      POSTGRES_USER: mario-russo
+      POSTGRES_PASSWORD: mario-russo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U mario-russo -d banco"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: quarkus-backend
+    restart: on-failure
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      KIND: postgresql
+      DB_USER: mario-russo
+      DB_PASSWORD: mario-russo
+      DB_URL: jdbc:postgresql://postgres:5432/banco
+      PUBLIC_KEY: publicKey.pem
+      PRIVATE_KEY: privateKey.pem
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./publicacao-frontend
+      dockerfile: Dockerfile.prod
+      args:                              # 👈 dentro do build
+        VITE_API_URL: http://localhost:8080
+    container_name: quasar-frontend
+    depends_on:
+      - backend
+    ports:
+      - "9000:80"
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
+    driver: bridge
