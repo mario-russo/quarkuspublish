@@ -79,7 +79,7 @@ a parte do backend está configurada para receber o banco de dados.
 tem criando um env passando o as variavel como segui o exempplo lembando que caso ele não
 tenha uma as keys usuara as que estão no projeto 
 para ter acessar ao backend pode ir para http://localhost:8080
-.env
+```.env
 KIND=postgresql
 DB_USER=mario-russo
 DB_PASSWORD=mario-russo
@@ -89,8 +89,7 @@ PUBLIC_KEY=classpath:secrets/publicKey.pem
 PRIVATE_KEY=classpath:secrets/privateKey.pem
 
 ### Env para FrontEnd
-env apenas para conectar ao backend
-
-VITE_API_URL = http://localhost:8080/
-
+env apenas para conectar ao backend 
 para acessar a aplicação frontend pode ir para  http://localhost:9000/
+```bash
+VITE_API_URL = http://localhost:8080/

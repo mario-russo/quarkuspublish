@@ -132,6 +132,7 @@
 import { ref, computed, nextTick } from 'vue';
 import { useQuasar } from 'quasar';
 import type { QInput } from 'quasar';
+import { salvePublish } from 'src/domain/api/publishService';
 
 const $q = useQuasar();
 
@@ -189,9 +190,11 @@ const handleFileUpload = (event: Event) => {
   }
 };
 
-const publishPost = () => {
+const publishPost = async () => {
   if (postContent.value.trim()) {
     emit('new-post', postContent.value, mediaPreview.value);
+    const response = await salvePublish({ conteudo: postContent.value, usuario_id: 0 });
+    console.log(response)
     closeModal();
   }
 };

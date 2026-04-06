@@ -1,11 +1,11 @@
-import api from  './axiosDomain' 
+import api from  './axiosDomain'
 
-interface Login{
+export interface Login{
     email: string
     senha:string
 }
 
-interface Register{
+export interface Register{
     senha:string
     email:string
     nome:string
