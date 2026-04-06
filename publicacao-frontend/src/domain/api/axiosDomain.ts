@@ -6,10 +6,22 @@ const config: AxiosRequestConfig = {
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    'Accept': 'application/json'
+    Accept: 'application/json'
   }
 }
 
 const api: AxiosInstance = axios.create(config)
+
+// Interceptor para adicionar o token em todas requisições
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token')
+
+  if (token) {
+    config.headers = config.headers ?? {}
+    config.headers.Authorization = `Bearer ${token}`
+  }
+
+  return config
+})
 
 export default api

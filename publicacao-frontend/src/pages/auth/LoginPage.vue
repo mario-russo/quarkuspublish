@@ -12,17 +12,33 @@
         <q-form @submit.prevent="login" class="q-gutter-md">
           <q-input v-model="form.email" label="Email" type="email" lazy-rules :rules="emailRules" />
 
-          <q-input v-model="form.password" label="Senha" type="password" lazy-rules :rules="passwordRules" />
+          <q-input
+            v-model="form.password"
+            label="Senha"
+            type="password"
+            lazy-rules
+            :rules="passwordRules"
+          />
 
           <div class="flex justify-between items-center">
             <q-checkbox v-model="form.remember" label="Lembrar-me" />
-            <router-link to="/forgot-password" class="text-caption text-primary text-decoration-none">
+            <router-link
+              to="/forgot-password"
+              class="text-caption text-primary text-decoration-none"
+            >
               Esqueceu a senha?
             </router-link>
           </div>
 
           <div>
-            <q-btn label="Entrar" type="submit" color="primary" class="full-width" size="lg" :loading="isLoading" />
+            <q-btn
+              label="Entrar"
+              type="submit"
+              color="primary"
+              class="full-width"
+              size="lg"
+              :loading="isLoading"
+            />
           </div>
         </q-form>
       </q-card-section>
@@ -41,15 +57,13 @@
 </template>
 
 <script setup lang="ts">
-
-
 import { computed, ref } from 'vue';
 
-import { AuthService } from '../../domain/api/authService'
-import { useRouter } from 'vue-router'
+import { AuthService } from '../../domain/api/authService';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from 'src/stores/auth-store';
 
-
-const router = useRouter()
+const router = useRouter();
 interface LoginForm {
   email: string;
   password: string;
@@ -64,9 +78,6 @@ const form = ref<LoginForm>({
   remember: false,
 });
 
-
-
-
 // Regras de validação
 const emailRules = [
   (val: string) => !!val || 'Email é obrigatório',
@@ -78,14 +89,22 @@ const passwordRules = [
   (val: string) => val.length >= 6 || 'Mínimo 6 caracteres',
 ];
 
-
 const ambiente = computed(() => {
   return import.meta.env.VITE_APP_NAME;
-})
+});
 
 async function login() {
-  await AuthService.login({ email: form.value.email, senha: form.value.password })
-  await router.push({path:"/"})
+  const response = await AuthService.login({
+    email: form.value.email,
+    senha: form.value.password,
+  });
+
+  if (response.status === 200) {
+    const authStore = useAuthStore();
+    authStore.setToken(response.data.token);
+
+    await router.push({ path: '/' });
+  }
 }
 </script>
 
