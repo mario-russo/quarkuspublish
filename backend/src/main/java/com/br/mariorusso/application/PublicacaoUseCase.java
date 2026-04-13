@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.repository.RepositoryCore;
 import com.br.mariorusso.core.service.ServiceCore;
 
+import com.br.mariorusso.infra.repository.PublicacaoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -40,5 +41,12 @@ public class PublicacaoUseCase implements ServiceCore<Publicacao>  {
     public List<Publicacao> findAll() {
        return repository.findAll();
     }
-
+    public  List<Publicacao> findByfield(String key, String value){
+        PublicacaoRepository publicacaoRepository = (PublicacaoRepository) repository;
+        return publicacaoRepository.findByfild(key, value);
+    }
+    public  List<Publicacao> findByfield(String key, Long value){
+        PublicacaoRepository publicacaoRepository = (PublicacaoRepository) repository;
+        return publicacaoRepository.findByfild(key, value);
+    }
 }

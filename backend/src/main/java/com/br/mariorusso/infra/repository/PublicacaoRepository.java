@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.repository.RepositoryCore;
 import com.br.mariorusso.infra.entity.PublicacaoEntity;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -57,6 +58,19 @@ public class PublicacaoRepository implements RepositoryCore<Publicacao> {
             throw new IllegalArgumentException("Publicação não encontrado");
         }
         return publicacaos.stream().map(PublicacaoEntity::toDomain).toList();
+    }
+
+    public List<Publicacao> findByfild(String key, String value){
+
+        List<PublicacaoEntity> list = PublicacaoEntity.list(key, value);
+        List<Publicacao> publicacaos = list.stream().map(PublicacaoEntity::toDomain).toList();
+        return publicacaos;
+    }
+    public List<Publicacao> findByfild(String key, Long value){
+
+        List<PublicacaoEntity> list = PublicacaoEntity.list(key, value);
+        List<Publicacao> publicacaos = list.stream().map(PublicacaoEntity::toDomain).toList();
+        return publicacaos;
     }
 
 }
