@@ -3,6 +3,7 @@ package com.br.mariorusso.interfaces.rest.publicacao;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.br.mariorusso.application.PublicacaoUseCase;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.ClaimValue;
 
@@ -90,5 +91,18 @@ public class PublicacaoResource {
             return Response.status(Response.Status.NOT_FOUND).entity("Nenhuma publicação encontrada").build();
         }
 
+    }
+    @GET
+    @Path("/user/{id}")
+    public  Response buscaPublicacaoDoUsuario(@PathParam("id") Long id){
+        try{
+            PublicacaoUseCase service1 = (PublicacaoUseCase)service;
+            String key = "usuario.id";
+            List<Publicacao> response = service1.findByfield(key, id);
+
+            return  Response.ok(response).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.NOT_FOUND).entity("Erro ao buscar publicação " + e.getMessage()).build();
+        }
     }
 }

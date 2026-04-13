@@ -7,16 +7,7 @@ import java.util.List;
 import com.br.mariorusso.core.model.Publicacao;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "publicacao")
@@ -32,14 +23,14 @@ public class PublicacaoEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public LocalDateTime dataPublicacao;
 
-    @ManyToOne()
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "usuario_id", nullable = false)
     public UsuarioEntity usuario;
 
-    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.LAZY)
     private List<ComentarioEntity> comentarios = new ArrayList<>();
 
-    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     public List<LikeEntity> likes = new ArrayList<>();
 
     public static PublicacaoEntity fromDomain(Publicacao publicacao) {
