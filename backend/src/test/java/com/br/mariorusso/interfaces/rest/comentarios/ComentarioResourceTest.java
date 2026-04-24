@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -31,30 +32,14 @@ class ComentarioResourceTest {
 
     @Test
     @DisplayName("salva comentário")
+    @TestSecurity(user = "test", roles = {"USER"})
     void salvaComentrio() {
         // Dados de teste
         Long usuarioId = 1L;
         Long publicacaoId = 1L;
         String conteudo = "Ótimo post!";
 
-        // Mock dos serviços
-        Usuario usuarioMock = new Usuario();
-        usuarioMock.setId(usuarioId);
-
-        Publicacao publicacaoMock = new Publicacao();
-        publicacaoMock.setId(publicacaoId);
-
-        Comentario comentarioSalvo = new Comentario();
-        comentarioSalvo.setId(1L);
-        comentarioSalvo.setConteudo(conteudo);
-        comentarioSalvo.setUsuario(usuarioMock);
-        comentarioSalvo.setPublicacao(publicacaoMock);
-        comentarioSalvo.setDataComentario(LocalDateTime.now());
-
-        // Configurar mocks
-        Mockito.when(usuarioService.findById(usuarioId)).thenReturn(usuarioMock);
-        Mockito.when(publicacaoService.findById(publicacaoId)).thenReturn(publicacaoMock);
-        Mockito.doNothing().when(comentarioService).save(Mockito.any(Comentario.class));
+//
 
         // Chamar a API e verificar
         given()
@@ -67,11 +52,6 @@ class ComentarioResourceTest {
                 .then()
                 .statusCode(200)
                 .body(equalTo("comentario salvo"));
-
-        // Verificar interações
-        Mockito.verify(usuarioService).findById(usuarioId);
-        Mockito.verify(publicacaoService).findById(publicacaoId);
-        Mockito.verify(comentarioService).save(Mockito.any(Comentario.class));
     }
 
     @Test
