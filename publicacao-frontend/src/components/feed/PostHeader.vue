@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { date as quasarDate } from 'quasar';
 import type { Author } from './types'; // Note o 'import type' aqui
 
@@ -29,6 +29,7 @@ const props = defineProps<{
   author: Author;
   date: string;
 }>();
+const text = ref("");
 
 const formattedDate = computed(() => {
   return quasarDate.formatDate(props.date, 'DD/MM/YYYY HH:mm'); // Usando o alias

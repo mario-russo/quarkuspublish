@@ -2,7 +2,6 @@
 services:
   postgres:
     image: postgres:17
-    container_name: postgres-dev
     restart: always
     environment:
       POSTGRES_DB: banco
@@ -22,7 +21,6 @@ services:
 
   backend:
     build: ./backend
-    container_name: quarkus-backend
     restart: on-failure
     depends_on:
       postgres:
@@ -45,7 +43,6 @@ services:
       dockerfile: Dockerfile.prod
       args:                              # 👈 dentro do build
         VITE_API_URL: http://localhost:8080
-    container_name: quasar-frontend
     depends_on:
       - backend
     ports:
