@@ -100,12 +100,14 @@ public class PublicacaoResource {
     @Path("/user/{id}")
     public  Response buscaPublicacaoDoUsuario(@PathParam("id") Long id){
         try{
+
             String key = "usuario.id";
             List<Publicacao> response = publicacaoUseCase.findByfield(key, id);
 
             List<PublicacaoDtoOut> dto = response.stream().map(PublicacaoDtoOut::dtoOut).toList();
 
             return  Response.ok(dto).build();
+
         }catch (Exception e){
             return Response.status(Response.Status.NOT_FOUND).entity("Erro ao buscar publicação " + e.getMessage()).build();
         }
