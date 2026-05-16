@@ -30,10 +30,16 @@ import { salveComents } from 'src/domain/comentarioService';
 import { Notify } from 'quasar';
 import { ref } from 'vue';
 import { publishGetById } from 'src/domain/publishUser';
+import type{ PublishUser } from 'src/domain/publishUser';
+
 
 const props = defineProps<{
   post: Post;
 }>();
+
+const emit = defineEmits<{
+  (e: 'salva-post',post:PublishUser):void
+}>()
 
 const showcomentario = ref(false);
 
@@ -47,7 +53,8 @@ const salvaComentario = async (e: string) => {
     });
 
     const post = await publishGetById(props.post.id);
-    props.post.comments = post.comentarios;
+    // props.post.comments = post.comentarios;
+    emit("salva-post", post)
 
     Notify.create({
       type: 'positive',
@@ -55,9 +62,10 @@ const salvaComentario = async (e: string) => {
       position: 'top-right',
     });
   } catch (error) {
+    console.error(error);
     Notify.create({
       type: 'negative',
-      message: 'Erro ao enviar comentário',
+      message: 'Erro ao enviar comentário ',
       position: 'top-right',
     });
   }

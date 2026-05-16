@@ -1,4 +1,4 @@
-import { Author, comentarios } from 'src/components/feed/types';
+import type { comentarios } from 'src/components/feed/types';
 import api from './api/axiosDomain';
 
 export interface PublishUser {
