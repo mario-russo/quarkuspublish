@@ -2,7 +2,7 @@ package com.br.mariorusso.interfaces.rest.like;
 
 import com.br.mariorusso.PostgresManagerTest;
 import com.br.mariorusso.auth.JwtService;
-import com.br.mariorusso.core.model.Like;
+import com.br.mariorusso.core.model.Curtida;
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @QuarkusTest
 @QuarkusTestResource(PostgresManagerTest.class)
-class LikeResourceTest {
+class CurtidaResourceTest {
     @Inject
     ServiceCore<Usuario> serviceUser;
 
@@ -103,15 +103,15 @@ class LikeResourceTest {
 
     @Test
     void buscaTodosLikes() {
-        List<Like> like = given()
+        List<Curtida> curtida = given()
                 .when()
                 .get("/like")
                 .then()
                 .statusCode(200)
                 .extract()
                 .jsonPath()
-                .getList("", Like.class);
-        assertFalse(like.isEmpty());
+                .getList("", Curtida.class);
+        assertFalse(curtida.isEmpty());
     }
 
     @Test

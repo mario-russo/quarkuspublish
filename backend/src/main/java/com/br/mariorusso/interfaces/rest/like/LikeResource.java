@@ -3,7 +3,7 @@ package com.br.mariorusso.interfaces.rest.like;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.br.mariorusso.core.model.Like;
+import com.br.mariorusso.core.model.Curtida;
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
@@ -25,12 +25,9 @@ import org.eclipse.microprofile.jwt.ClaimValue;
 @Consumes(MediaType.APPLICATION_JSON)
 public class LikeResource {
 
+
     @Inject
-    ServiceCore<Like> service;
-    @Inject
-    ServiceCore<Publicacao> servicePub;
-    @Inject
-    ServiceCore<Usuario> serviceUser;
+    ServiceCore<Curtida> curtidaService;
 
     @Claim("id")
     ClaimValue<Long> idClaim;
@@ -39,16 +36,15 @@ public class LikeResource {
     @RolesAllowed("USER")
     public Response salvaLikes(LikeDtoIn dto) {
         try {
-            Usuario usuario = serviceUser.findById(idClaim.getValue());
 
-            Publicacao publicacao = servicePub.findById(dto.publicacao_id());
+            Curtida curtida = new Curtida();
 
-            Like like = new Like();
+            curtida.setUsuario(idClaim.getValue());
+            curtida.setPublicacao(dto.publicacao_id());
+            curtida.setDataLike(LocalDateTime.now());
 
-            like.setDataLike(LocalDateTime.now());
-            like.setPublicacao(publicacao);
-            like.setUsuario(usuario);
-            service.save(like);
+
+            curtidaService.save(curtida);
             return Response.ok("Publicação Curtida").build();
 
 
@@ -59,9 +55,9 @@ public class LikeResource {
     }
 
     @GET
-    public Response buscaTodosLikes() {
-        List<Like> like = service.findAll();
-        return Response.ok(like).build();
+    public Response buscaTodosLikesPorpublicação() {
+        List<Curtida> curtida = curtidaService.findAll();
+        return Response.ok(curtida).build();
     }
 
     @Path("/{id}")
@@ -69,7 +65,7 @@ public class LikeResource {
     public Response BuscaLikePorId(@PathParam("id") Long id) {
 
         try {
-            Like byId = service.findById(id);
+            Curtida byId = curtidaService.findById(id);
             return Response.ok(byId).build();
 
         } catch (Exception e) {

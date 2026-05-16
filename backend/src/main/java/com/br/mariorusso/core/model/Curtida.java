@@ -2,21 +2,21 @@ package com.br.mariorusso.core.model;
 
 import java.time.LocalDateTime;
 
-public class Like {
+public class Curtida {
 
     private Long id;
     private LocalDateTime  dataLike;
-    private Usuario usuario;
-    private Publicacao publicacao;
+    private Long usuarioId;
+    private Long publicacaoId;
 
-    public Like() {
+    public Curtida() {
     }
 
-    public Like(Long id, LocalDateTime  dataLike, Usuario usuario, Publicacao publicacao) {
+    public Curtida(Long id, LocalDateTime  dataLike, Long usuario, Long publicacao) {
         this.id = id;
         this.dataLike = dataLike;
-        this.usuario = usuario;
-        this.publicacao = publicacao;
+        this.usuarioId = usuario;
+        this.publicacaoId = publicacao;
     }
 
     public Long getId() {
@@ -35,20 +35,20 @@ public class Like {
         this.dataLike = dataLike;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Long getUsuario() {
+        return usuarioId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuario(Long usuario) {
+        this.usuarioId = usuario;
     }
 
-    public Publicacao getPublicacao() {
-        return publicacao;
+    public Long getPublicacao() {
+        return publicacaoId;
     }
 
-    public void setPublicacao(Publicacao publicacao) {
-        this.publicacao = publicacao;
+    public void setPublicacao(Long publicacao) {
+        this.publicacaoId = publicacao;
     }
 
     @Override
@@ -67,7 +67,7 @@ public class Like {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Like other = (Like) obj;
+        Curtida other = (Curtida) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
