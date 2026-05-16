@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.LoginCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -34,6 +35,7 @@ public class LoginResource {
 
     @POST
     @Path("/login")
+    @PermitAll
     public Response login(LoginDtoIn login){
         try{
             UsuarioEntity usuario = loginUsuario.login(login.email(), login.senha());
@@ -51,6 +53,7 @@ public class LoginResource {
     }
     @Path("/register")
     @POST()
+    @PermitAll
     public  Response register (RegisterDto dto){
         Login login = (Login) loginUsuario;
         login.register(dto);
