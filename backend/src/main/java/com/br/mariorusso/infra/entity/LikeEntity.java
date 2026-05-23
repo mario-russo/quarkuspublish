@@ -22,7 +22,7 @@ public class LikeEntity extends PanacheEntityBase{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false,name = "criado_em")
     public LocalDateTime criadoEm;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,17 +36,8 @@ public class LikeEntity extends PanacheEntityBase{
     public static LikeEntity fromDomain(Curtida curtida){
         LikeEntity entity = new LikeEntity();
 
-        entity.id = curtida.getId();
-        entity.criadoEm = curtida.getDataLike();
-
-        UsuarioEntity usuario = new UsuarioEntity();
-        usuario.id = curtida.getUsuario();
-
-        PublicacaoEntity publicacao = new PublicacaoEntity();
-        publicacao.id = curtida.getPublicacao();
-
-        entity.usuario = usuario;
-        entity.publicacao = publicacao;
+        entity.usuario =  UsuarioEntity.findById(curtida.getUsuario());
+        entity.publicacao = PublicacaoEntity.findById(curtida.getPublicacao());
 
         return entity;
     }
@@ -56,9 +47,8 @@ public class LikeEntity extends PanacheEntityBase{
 
         curtida.setId(id);
         curtida.setDataLike(criadoEm);
-        curtida.setPublicacao(usuario.id);
-        curtida.setUsuario(publicacao.id);
-
+        curtida.setPublicacao(publicacao.id);
+        curtida.setUsuario(usuario.id);
 
         return curtida;
     }

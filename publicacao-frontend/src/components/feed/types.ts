@@ -15,6 +15,7 @@ export interface Post {
   likes: number;
   comments: comentarios[];
   shares: number;
+  likeUsers:CurtidaUsers[]
 }
 
 export interface salveComentario {
@@ -33,4 +34,8 @@ export interface usuario{
   id : number
   nome:string
 
+}
+export interface CurtidaUsers{
+  id:number
+  usuario:number
 }

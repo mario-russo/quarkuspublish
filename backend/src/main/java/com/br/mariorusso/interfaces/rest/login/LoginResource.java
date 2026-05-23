@@ -43,11 +43,17 @@ public class LoginResource {
 
 
             String token = jwtService.generateToken(user);
-            return Response.ok(Map.of("token",token)).build();
+            return Response.ok(Map.of("token",token,"usuario",Map.of(
+                    "id", user.getId(),
+                    "nome", user.getNome(),
+                    "email", user.getEmail()
+
+            ))).build();
 
         } catch (Exception e) {
             return  Response.status(Response.Status.NOT_FOUND).entity(Map.of("Erro","Usuário não encontrado!!!")).build();
         }
+
 
 
     }

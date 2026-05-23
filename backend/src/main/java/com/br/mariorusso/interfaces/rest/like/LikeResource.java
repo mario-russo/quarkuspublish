@@ -35,22 +35,15 @@ public class LikeResource {
     @POST
     @RolesAllowed("USER")
     public Response salvaLikes(LikeDtoIn dto) {
-        try {
 
             Curtida curtida = new Curtida();
 
             curtida.setUsuario(idClaim.getValue());
             curtida.setPublicacao(dto.publicacao_id());
-            curtida.setDataLike(LocalDateTime.now());
-
 
             curtidaService.save(curtida);
             return Response.ok("Publicação Curtida").build();
 
-
-        } catch (Exception e) {
-            return Response.status(404).build();
-        }
 
     }
 

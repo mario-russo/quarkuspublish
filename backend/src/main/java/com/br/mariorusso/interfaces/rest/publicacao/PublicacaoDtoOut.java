@@ -4,9 +4,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.br.mariorusso.core.model.Publicacao;
+import com.br.mariorusso.infra.entity.PublicacaoEntity;
 import com.br.mariorusso.interfaces.rest.comentarios.ComentaioDtoOut;
 
-import com.br.mariorusso.interfaces.rest.like.LikeDtoIn;
+import com.br.mariorusso.interfaces.rest.like.CurtidaForPublicacao;
 import com.br.mariorusso.interfaces.rest.like.LikeDtoOut;
 import com.br.mariorusso.interfaces.rest.usuario.UsuarioDtoOut;
 import io.quarkus.runtime.annotations.RegisterForReflection;

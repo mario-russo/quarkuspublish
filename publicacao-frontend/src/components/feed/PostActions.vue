@@ -20,7 +20,6 @@
     <transition name="fade">
       <q-btn
         v-show="postComentario.length > 0"
-
         dense
         flat
         icon="send"
@@ -32,7 +31,7 @@
 
   <!-- Ações -->
   <q-card-actions class="flex justify-around">
-    <q-btn flat icon="thumb_up_alt" label="Curtir" />
+    <q-btn flat icon="thumb_up_alt" :text-color="props.curtida" label="Curtir" @click="curtiPubicacao"/>
     <q-btn flat icon="comment" label="Comentar" @click="comentarPublicacao" />
     <q-btn flat icon="share" label="Compartilhar" />
     <!-- <q-btn flat icon="send" label="Enviar" /> -->
@@ -41,11 +40,14 @@
 
 <script setup lang="ts">
 import { ref, nextTick } from 'vue';
+const props = defineProps<{
+  curtida: string;
+}>();
 
 const postComentario = ref('');
 const comentar = ref(false);
 const postInput = ref();
-const emit = defineEmits(["comentario"])
+const emit = defineEmits(['comentario', 'curtir']);
 
 const comentarPublicacao = async () => {
   comentar.value = !comentar.value;
@@ -57,10 +59,13 @@ const comentarPublicacao = async () => {
 };
 
 const enviarComentario = () => {
-
-  comentar.value = !comentar.value
-  emit("comentario",postComentario.value)
+  comentar.value = !comentar.value;
+  emit('comentario', postComentario.value);
   postComentario.value = '';
+};
+
+const curtiPubicacao = () => {
+  emit('curtir');
 };
 </script>
 
@@ -76,9 +81,8 @@ const enviarComentario = () => {
 .comentario-input {
   flex: 2;
 }
-.acao-enviar{
+.acao-enviar {
   padding-left: 2%;
-
 }
 
 .post-input {

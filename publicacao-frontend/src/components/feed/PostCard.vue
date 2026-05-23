@@ -16,11 +16,14 @@
 
     <q-separator />
     <ComentarioCard :showcomentario="showcomentario" :comments="post.comments" />
-    <PostActions @comentario="salvaComentario" />
+    <PostActions @comentario="salvaComentario" @curtir="curtiPublicacao" :curtida="curtiu"/>
   </q-card>
 </template>
 
 <script setup lang="ts">
+import { computed, ref, } from 'vue';
+
+
 import PostHeader from './PostHeader.vue';
 import PostStats from './PostStats.vue';
 import PostActions from './PostActions.vue';
@@ -28,17 +31,20 @@ import ComentarioCard from '../ComentarioCard.vue';
 import type { Post } from './types';
 import { salveComents } from 'src/domain/comentarioService';
 import { Notify } from 'quasar';
-import { ref } from 'vue';
 import { publishGetById } from 'src/domain/publishUser';
 import type{ PublishUser } from 'src/domain/publishUser';
+import { curtirPublicacao } from 'src/domain/CurtidaService';
+import { useUsuarioStore } from 'src/stores/usuario-store';
 
 
 const props = defineProps<{
   post: Post;
 }>();
+const {usuario} = useUsuarioStore()
 
 const emit = defineEmits<{
   (e: 'salva-post',post:PublishUser):void
+  (e: 'salva-like',post:PublishUser):void
 }>()
 
 const showcomentario = ref(false);
@@ -74,6 +80,24 @@ const salvaComentario = async (e: string) => {
 const clickComentario = () => {
   showcomentario.value = !showcomentario.value;
 };
+
+const curtiPublicacao = async ()=>{
+await curtirPublicacao({publicacao_id: props.post.id,usuario_id:0})
+const post = await publishGetById(props.post.id);
+ emit("salva-like", post)
+
+}
+const curtiu = computed(() => {
+
+  return props.post.likeUsers.some(
+    e =>
+      e.usuario === usuario?.id
+  )
+    ? 'blue'
+    : ''
+})
+
+
 </script>
 
 <style scoped>

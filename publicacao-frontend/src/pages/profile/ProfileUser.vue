@@ -2,7 +2,7 @@
   <div class="row justify-center q-pt-md">
     <div class="col-12 col-md-8 col-lg-6">
       <div v-for="post in posts" :key="post.id" class="q-mb-md">
-        <PostCard :post="post" @salva-post="salvaComentario" />
+        <PostCard :post="post" @salva-post="salvaComentario" @salva-like="curtida"/>
       </div>
     </div>
   </div>
@@ -35,6 +35,7 @@ function toPost(e: PublishUser): Post {
     likes: e.likes.length,
     comments: e.comentarios,
     shares: 0,
+    likeUsers:e.likes
   };
 }
 
@@ -48,7 +49,19 @@ const salvaComentario = (postAtualizado: PublishUser) => {
     }
   }
 };
+const curtida = (postAtualizado: PublishUser) => {
+  const findIndex = posts.value.findIndex((e) => e.id === postAtualizado.publicacao_id);
+  if (findIndex !== -1) {
+   const post = posts.value[findIndex];
+
+    if (post) {
+      post.likes = postAtualizado.likes.length;
+      post.likeUsers = postAtualizado.likes
+    }
+  }
+};
 onMounted(async () => {
   posts.value = (await publishUser(id)).map((e) => toPost(e));
+  // console.log(posts.value)
 });
 </script>

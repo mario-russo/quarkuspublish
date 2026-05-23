@@ -10,6 +10,7 @@ import com.br.mariorusso.core.service.ServiceCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
 
 
+import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -68,7 +69,7 @@ class CurtidaResourceTest {
     @Test
     void dado_id_usuario_invalido_erro_ao_salva() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             Usuario usuario = serviceUser.findById(100L);
             String token = jwt.generateToken(usuario);
 
@@ -81,7 +82,7 @@ class CurtidaResourceTest {
                     .when()
                     .post("/like")
                     .then()
-                    .statusCode(200);
+                    .statusCode(404);
         });
     }
     @Test

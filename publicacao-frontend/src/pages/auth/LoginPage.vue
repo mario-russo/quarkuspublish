@@ -62,6 +62,8 @@ import { computed, ref } from 'vue';
 import { AuthService } from '../../domain/api/authService';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth-store';
+import { useUsuarioStore } from 'src/stores/usuario-store';
+
 
 const router = useRouter();
 interface LoginForm {
@@ -102,6 +104,8 @@ async function login() {
   if (response.status === 200) {
     const authStore = useAuthStore();
     authStore.setToken(response.data.token);
+
+    useUsuarioStore().setUsuario(response.data.usuario)
 
     await router.push({ path: '/' });
   }

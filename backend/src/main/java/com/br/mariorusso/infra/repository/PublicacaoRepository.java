@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.repository.RepositoryCore;
 import com.br.mariorusso.infra.entity.PublicacaoEntity;
 
+import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,7 @@ public class PublicacaoRepository implements RepositoryCore<Publicacao> {
     public void update(Publicacao object) {
         PublicacaoEntity entity = PublicacaoEntity.findById(object.getId());
         if (entity == null) {
-            throw new IllegalArgumentException("Publicação não encontrado");
+            throw new NotFoundException("Publicação não Encontrada!");
         }
         entity.conteudo = object.getConteudo();
         entity.persist();
@@ -37,7 +38,7 @@ public class PublicacaoRepository implements RepositoryCore<Publicacao> {
     public void delete(Publicacao object) {
         PublicacaoEntity entity = PublicacaoEntity.findById(object.getId());
         if (entity == null) {
-            throw new IllegalArgumentException("Publicação não encontrado");
+            throw new NotFoundException("Publicação não Encontrada!");
         }
         entity.delete();
     }
@@ -46,7 +47,7 @@ public class PublicacaoRepository implements RepositoryCore<Publicacao> {
     public Publicacao findById(Long id) {
         PublicacaoEntity entity = PublicacaoEntity.findById(id);
         if (entity == null) {
-            throw new IllegalArgumentException("Publicação não encontrado");
+            throw new NotFoundException("Publicação não Encontrada!");
         }
         return entity.toDomain();
     }
