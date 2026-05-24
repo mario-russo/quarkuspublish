@@ -2,7 +2,9 @@ package com.br.mariorusso.interfaces.rest.publicacao;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Stream;
 
+import com.br.mariorusso.application.PublicacaoUseCase;
 import org.eclipse.microprofile.jwt.Claim;
 import org.eclipse.microprofile.jwt.ClaimValue;
 
@@ -31,6 +33,8 @@ public class PublicacaoResource {
     ServiceCore<Publicacao> service;
     @Inject
     ServiceCore<Usuario> usuarioService;
+    @Inject
+    PublicacaoUseCase publicacaoUseCase;
 
     @Inject
     @Claim("id")
@@ -84,11 +88,25 @@ public class PublicacaoResource {
 
         try{
             Publicacao publicacao = service.findById(id);
-            return Response.ok(publicacao).build();
+            PublicacaoDtoOut response = PublicacaoDtoOut.dtoOut(publicacao);
+            return Response.ok(response).build();
 
         } catch (Exception e) {
             return Response.status(Response.Status.NOT_FOUND).entity("Nenhuma publicação encontrada").build();
         }
+
+    }
+    @GET
+    @Path("/user/{id}")
+    public  Response buscaPublicacaoDoUsuario(@PathParam("id") Long id){
+
+
+            String key = "usuario.id";
+            List<Publicacao> response = publicacaoUseCase.findByfield(key, id);
+
+            List<PublicacaoDtoOut> dto = response.stream().map(PublicacaoDtoOut::dtoOut).toList();
+
+            return  Response.ok(dto).build();
 
     }
 }

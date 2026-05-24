@@ -15,7 +15,7 @@ public class Usuario {
 
     private List<Publicacao> posts;
     private List<Comentario> comentarios;
-    private List<Like> likes;
+    private List<Curtida> curtidas;
 
     public Usuario() {
     }
@@ -75,12 +75,12 @@ public class Usuario {
         this.comentarios = comentarios;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public List<Curtida> getLikes() {
+        return curtidas;
     }
 
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
+    public void setLikes(List<Curtida> curtidas) {
+        this.curtidas = curtidas;
     }
 
     @Override

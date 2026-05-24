@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.repository.RepositoryCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
 
+import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
 
@@ -27,7 +28,7 @@ public class UsuarioRepository implements RepositoryCore<Usuario> {
 
         UsuarioEntity usuarioUpDate = UsuarioEntity.findById(object.getId());
         if (usuarioUpDate == null) {
-            throw new IllegalArgumentException("Usuario não encontrado");
+            throw new NotFoundException("Usuario não encontrado");
         }
         usuarioUpDate.nome = object.getNome();
         usuarioUpDate.email = object.getEmail();
@@ -40,7 +41,7 @@ public class UsuarioRepository implements RepositoryCore<Usuario> {
     public void delete(Usuario object) {
         UsuarioEntity usuarioDelete = UsuarioEntity.findById(object.getId());
         if (usuarioDelete == null) {
-            throw new IllegalArgumentException("Usuario não encontrado");
+            throw new NotFoundException("Usuario não encontrado");
         }
         usuarioDelete.delete();
     }
@@ -49,7 +50,7 @@ public class UsuarioRepository implements RepositoryCore<Usuario> {
     public Usuario findById(Long id) {
         UsuarioEntity usuario = UsuarioEntity.findById(id);
         if (usuario == null) {
-            throw new IllegalArgumentException("Usuario não encontrado");
+            throw new NotFoundException("Usuario não encontrado");
         }
         return usuario.toDomain();
     }
@@ -58,7 +59,7 @@ public class UsuarioRepository implements RepositoryCore<Usuario> {
     public List<Usuario> findAll() {
         List<UsuarioEntity> usuarios = UsuarioEntity.listAll();
         if (usuarios.isEmpty()) {
-            throw new IllegalArgumentException("Nenhum usuario encontrado");
+            throw new NotFoundException("Nenhum usuario encontrado");
         }
         return usuarios.stream().map(UsuarioEntity::toDomain).toList();
     }

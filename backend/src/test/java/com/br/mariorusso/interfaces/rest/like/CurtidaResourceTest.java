@@ -2,7 +2,7 @@ package com.br.mariorusso.interfaces.rest.like;
 
 import com.br.mariorusso.PostgresManagerTest;
 import com.br.mariorusso.auth.JwtService;
-import com.br.mariorusso.core.model.Like;
+import com.br.mariorusso.core.model.Curtida;
 import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
@@ -10,6 +10,7 @@ import com.br.mariorusso.core.service.ServiceCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
 
 
+import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
@@ -30,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @QuarkusTest
 @QuarkusTestResource(PostgresManagerTest.class)
-class LikeResourceTest {
+class CurtidaResourceTest {
     @Inject
     ServiceCore<Usuario> serviceUser;
 
@@ -68,7 +69,7 @@ class LikeResourceTest {
     @Test
     void dado_id_usuario_invalido_erro_ao_salva() {
 
-        assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(NotFoundException.class, () -> {
             Usuario usuario = serviceUser.findById(100L);
             String token = jwt.generateToken(usuario);
 
@@ -81,7 +82,7 @@ class LikeResourceTest {
                     .when()
                     .post("/like")
                     .then()
-                    .statusCode(200);
+                    .statusCode(404);
         });
     }
     @Test
@@ -103,15 +104,15 @@ class LikeResourceTest {
 
     @Test
     void buscaTodosLikes() {
-        List<Like> like = given()
+        List<Curtida> curtida = given()
                 .when()
                 .get("/like")
                 .then()
                 .statusCode(200)
                 .extract()
                 .jsonPath()
-                .getList("", Like.class);
-        assertFalse(like.isEmpty());
+                .getList("", Curtida.class);
+        assertFalse(curtida.isEmpty());
     }
 
     @Test

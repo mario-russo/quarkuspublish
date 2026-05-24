@@ -11,6 +11,7 @@ import com.br.mariorusso.core.model.Publicacao;
 import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.ServiceCore;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
@@ -20,6 +21,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import org.eclipse.microprofile.jwt.Claim;
+import org.eclipse.microprofile.jwt.ClaimValue;
 
 @Path("comentarios")
 @Produces(MediaType.APPLICATION_JSON)
@@ -31,6 +34,10 @@ public class ComentarioResource {
     private final ServiceCore<Usuario> serviceUser;
 
     @Inject
+    @Claim("id")
+    ClaimValue<Long> clamId;
+
+    @Inject
     public  ComentarioResource(ComentarioUseCase service, PublicacaoUseCase servicePub, UsuarioUseCase serviceUser){
         this.service = service;
         this.servicePub = servicePub;
@@ -38,18 +45,23 @@ public class ComentarioResource {
     }
 
 
-    @POST 
+    @POST
+    @RolesAllowed("USER")
+
     public Response salvaComentrio(ComentarioDtoIn dto){
         try {
-            Usuario usuario = serviceUser.findById(dto.usuario_id());
+            Usuario usuario = serviceUser.findById(clamId.getValue());
             Publicacao publicacao = servicePub.findById(dto.publicacao_id());
 
             Comentario comentario = new Comentario();
             comentario.setConteudo(dto.conteudo());
             comentario.setDataComentario(LocalDateTime.now());
+
             comentario.setPublicacao(publicacao);
             comentario.setUsuario(usuario);
             service.save(comentario);
+
+            System.out.println(comentario);
 
             return Response.ok("comentario salvo").build();
 

@@ -61,7 +61,7 @@ class PublicacaoResourceTest {
                 .then()
                 .statusCode(200)
                 .body("[0].conteudo", equalTo("Conteúdo inicial"))
-                .body("[0].usuario_id", equalTo(1))
+                .body("[0].usuario.id", equalTo(1))
                 .body("[2].conteudo", equalTo("conteudo admin"));
 
     }

@@ -1,5 +1,7 @@
 package com.br.mariorusso.interfaces.rest.like;
 
+
+
 import java.time.LocalDateTime;
 
 public record LikeDtoIn(
@@ -7,5 +9,5 @@ public record LikeDtoIn(
     Long publicacao_id,
     LocalDateTime dataLike
 ) {
-    
+
 }

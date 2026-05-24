@@ -44,7 +44,7 @@ public class UsuarioResource {
         try {
 
             Usuario usuario = service.findById(id);
-            UsuarioDtoOut dto = new UsuarioDtoOut(usuario.getNome(), usuario.getEmail());
+            UsuarioDtoOut dto = new UsuarioDtoOut(usuario.getId(), usuario.getNome(), usuario.getEmail());
             return Response.ok(dto).build();
 
         } catch (Exception e) {

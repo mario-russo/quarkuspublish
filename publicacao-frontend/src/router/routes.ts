@@ -20,6 +20,11 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    path: '/profile',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [{ path: 'user/:id', component: () => import('pages/profile/ProfileUser.vue') }],
+  },
 
   // Always leave this as last one,
   // but you can also remove it

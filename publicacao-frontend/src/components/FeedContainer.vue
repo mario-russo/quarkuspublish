@@ -25,7 +25,7 @@
 import { ref, computed } from 'vue';
 import CreatePost from 'components/feed/CreatePost.vue';
 import PostCard from 'components/feed/PostCard.vue';
-import type { Post } from 'components/feed/types';
+import type { Post,comentarios } from 'components/feed/types';
 
 // Dados mockados
 const posts = ref<Post[]>([
@@ -41,7 +41,7 @@ const posts = ref<Post[]>([
       'Acabei de concluir um projeto incrível usando Vue 3 e Quasar Framework! Foi desafiador mas muito gratificante ver o resultado final. #frontend #vuejs #quasar',
     date: '2023-05-15T10:30:00',
     likes: 24,
-    comments: 5,
+    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
     shares: 2,
   },
   {
@@ -57,7 +57,7 @@ const posts = ref<Post[]>([
     date: '2023-05-14T15:45:00',
     image: 'https://cdn.quasar.dev/img/mountains.jpg',
     likes: 56,
-    comments: 12,
+    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
     shares: 8,
   },
   {
@@ -72,7 +72,7 @@ const posts = ref<Post[]>([
       'Estamos contratando UX Designers para nosso time! Se você tem experiência com design system e prototipagem, venha fazer parte dessa jornada conosco.',
     date: '2023-05-12T09:15:00',
     likes: 89,
-    comments: 23,
+    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
     shares: 15,
   },
 ]);
@@ -102,7 +102,7 @@ const addPost = (content: string) => {
     content,
     date: new Date().toISOString(),
     likes: 0,
-    comments: 0,
+    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
     shares: 0,
   };
   posts.value.unshift(newPost);

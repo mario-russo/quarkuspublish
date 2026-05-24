@@ -11,7 +11,7 @@ public class Publicacao {
     private LocalDateTime  dataPublicacao;
     private Usuario usuario;
     private List<Comentario> comentarios= new ArrayList<>();
-    private List<Like> likes = new ArrayList<>();
+    private List<Curtida> curtidas = new ArrayList<>();
 
     public Publicacao() {
     }
@@ -63,12 +63,12 @@ public class Publicacao {
         this.comentarios = comentarios;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public List<Curtida> getLikes() {
+        return curtidas;
     }
 
-    public void setLikes(List<Like> likes) {
-        this.likes = likes;
+    public void setLikes(List<Curtida> curtidas) {
+        this.curtidas = curtidas;
     }
 
     @Override

@@ -1,27 +1,64 @@
-import axios from 'axios'
-import type { AxiosInstance, AxiosRequestConfig } from 'axios'
+import axios from 'axios';
+import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 
 const config: AxiosRequestConfig = {
   baseURL: import.meta.env.VITE_API_URL as string,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
-    Accept: 'application/json'
-  }
-}
+    Accept: 'application/json',
+  },
+};
 
-const api: AxiosInstance = axios.create(config)
+const api: AxiosInstance = axios.create(config);
 
-// Interceptor para adicionar o token em todas requisições
+// REQUEST INTERCEPTOR
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('token')
 
-  if (token) {
-    config.headers = config.headers ?? {}
-    config.headers.Authorization = `Bearer ${token}`
+  const token = localStorage.getItem('token');
+
+  const publicRoutes = [
+    '/auth/login',
+    '/auth/register'
+  ];
+
+  const isPublicRoute =
+    publicRoutes.some(route =>
+      config.url?.includes(route)
+    );
+
+  if (token && !isPublicRoute) {
+
+    config.headers = config.headers ?? {};
+
+    config.headers.Authorization =
+      `Bearer ${token}`;
   }
 
-  return config
-})
+  return config;
+});
 
-export default api
+// RESPONSE INTERCEPTOR
+api.interceptors.response.use(
+  (response) => response,
+
+  (error) => {
+
+    if (error.response?.status === 401) {
+
+      localStorage.removeItem('token');
+
+      window.location.href = '/login';
+    }
+
+    return Promise.reject(
+      error instanceof Error
+        ? error
+        : new Error('Erro desconhecido')
+    );
+  }
+);
+
+
+
+export default api;

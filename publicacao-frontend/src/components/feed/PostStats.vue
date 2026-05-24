@@ -1,7 +1,7 @@
 <template>
   <q-card-section class="q-pt-none">
     <div class="flex justify-between items-center text-caption text-grey-7">
-      <div>{{ likes }} curtidas • {{ comments }} comentários</div>
+      <div>{{ likes }} curtidas • {{ comments }} <span @click="clickcomentario" class="cursor-pointer">comentários</span></div>
       <div>{{ shares }} compartilhamentos</div>
     </div>
   </q-card-section>
@@ -13,4 +13,11 @@ defineProps<{
   comments: number;
   shares: number;
 }>();
+
+const emit = defineEmits(["clickComentario"])
+
+const clickcomentario=()=>{
+emit("clickComentario")
+}
+
 </script>

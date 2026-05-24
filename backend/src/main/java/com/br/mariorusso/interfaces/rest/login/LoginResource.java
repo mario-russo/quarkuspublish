@@ -6,6 +6,7 @@ import com.br.mariorusso.core.model.Usuario;
 import com.br.mariorusso.core.service.LoginCore;
 import com.br.mariorusso.infra.entity.UsuarioEntity;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
@@ -34,6 +35,7 @@ public class LoginResource {
 
     @POST
     @Path("/login")
+    @PermitAll
     public Response login(LoginDtoIn login){
         try{
             UsuarioEntity usuario = loginUsuario.login(login.email(), login.senha());
@@ -41,16 +43,23 @@ public class LoginResource {
 
 
             String token = jwtService.generateToken(user);
-            return Response.ok(Map.of("token",token)).build();
+            return Response.ok(Map.of("token",token,"usuario",Map.of(
+                    "id", user.getId(),
+                    "nome", user.getNome(),
+                    "email", user.getEmail()
+
+            ))).build();
 
         } catch (Exception e) {
             return  Response.status(Response.Status.NOT_FOUND).entity(Map.of("Erro","Usuário não encontrado!!!")).build();
         }
 
 
+
     }
     @Path("/register")
     @POST()
+    @PermitAll
     public  Response register (RegisterDto dto){
         Login login = (Login) loginUsuario;
         login.register(dto);
