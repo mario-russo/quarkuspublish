@@ -23,7 +23,23 @@ const routes: RouteRecordRaw[] = [
   {
     path: '/profile',
     component: () => import('layouts/MainLayout.vue'),
-    children: [{ path: 'user/:id', component: () => import('pages/profile/ProfileUser.vue') }],
+    children: [
+      {
+        path: 'publicacao/:id',
+        name: 'usuario-publicacao',
+        component: () => import('pages/profile/ProfileUser.vue'),
+      },
+      {
+        path: '',
+        name: 'ver-perfil',
+        component: () => import('pages/profile/ProfilePage.vue'),
+      },
+      {
+        path: 'user/:id',
+        name: 'perfil-visitante',
+        component: () => import('pages/profile/ProfilePublic.vue'),
+      },
+    ],
   },
 
   // Always leave this as last one,

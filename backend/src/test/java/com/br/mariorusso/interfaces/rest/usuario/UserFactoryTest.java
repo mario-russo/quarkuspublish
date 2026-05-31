@@ -8,8 +8,8 @@ import com.br.mariorusso.infra.entity.UsuarioEntity;
 
 public class UserFactoryTest {
 
-    public static final String NOME = "mario russo";
-    public static final String EMAIL = "mario@gmail.com";
+    public static final String NOME = "Mario Russo";
+    public static final String EMAIL = "russo@gmail.com";
     public static final String PASSWORD = "123456";
     public static final Roles ROLES = Roles.USER;
 

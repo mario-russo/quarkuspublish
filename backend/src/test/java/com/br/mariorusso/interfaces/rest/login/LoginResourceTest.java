@@ -21,14 +21,8 @@ class LoginResourceTest {
     @Inject
     LoginCore<UsuarioEntity> loginUsuario;
 
-    final String EMAIL= "mario@gmail.com";
+    final String EMAIL= "qualquer@gmail.com";
     final String SENHA = "123456";
-
-    @BeforeEach
-    void setUp(){
-        Usuario usuario = new Usuario(null, "mario",EMAIL,SENHA);
-        serviceCore.save(usuario);
-    }
 
     @Test
     @DisplayName("Dado um usuario uma senha ou email invalido returna status 404")
@@ -67,7 +61,7 @@ class LoginResourceTest {
     }
     @Test
     @DisplayName("Cadastra um usuário , status 200")
-    void retornaStatus200AposDados(){
+    void deveCadastrarUsuarioComSucesso(){
         RegisterDto dto = new RegisterDto("mario","mario@e.com","123456");
 
         given()

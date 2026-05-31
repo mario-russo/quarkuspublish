@@ -1,7 +1,7 @@
 
 services:
   postgres:
-    image: postgres:17
+    image: postgres:18
     restart: always
     environment:
       POSTGRES_DB: banco
@@ -10,7 +10,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data/pgdata
     networks:
       - app-network
     healthcheck:
@@ -21,7 +21,7 @@ services:
 
   backend:
     build: ./backend
-    restart: on-failure
+    restart: "no"
     depends_on:
       postgres:
         condition: service_healthy
@@ -30,18 +30,21 @@ services:
       DB_USER: mario-russo
       DB_PASSWORD: mario-russo
       DB_URL: jdbc:postgresql://postgres:5432/banco
-      PUBLIC_KEY: publicKey.pem
-      PRIVATE_KEY: privateKey.pem
+      PUBLIC_KEY: classpath:/publicKey.pem
+      PRIVATE_KEY: classpath:/privateKey.pem
+      ISSUER: mario-russo
+      CORS_ORIGINS: http://localhost:9000
     ports:
       - "8080:8080"
     networks:
       - app-network
 
   frontend:
+    restart: "no"
     build:
       context: ./publicacao-frontend
       dockerfile: Dockerfile.prod
-      args:                              # 👈 dentro do build
+      args:                            
         VITE_API_URL: http://localhost:8080
     depends_on:
       - backend

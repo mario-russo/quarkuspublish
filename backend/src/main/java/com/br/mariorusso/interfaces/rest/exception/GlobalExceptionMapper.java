@@ -15,7 +15,8 @@ public class GlobalExceptionMapper implements ExceptionMapper<Exception> {
 
         ErrorResponse error = new ErrorResponse(
                 Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
-                "Erro interno no servidor",
+                "Erro interno no servidor " + exception.getMessage(),
+
                 LocalDateTime.now()
         );
         return Response
