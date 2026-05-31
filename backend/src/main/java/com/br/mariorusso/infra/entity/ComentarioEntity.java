@@ -27,7 +27,7 @@ public class ComentarioEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public String conteudo;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "data_comentario")
     public LocalDateTime dataComentario;
 
     @ManyToOne(fetch = FetchType.LAZY)

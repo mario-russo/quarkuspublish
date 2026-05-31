@@ -1,8 +1,8 @@
 <template>
   <q-layout view="hHh Lpr lFf">
     <!-- Barra de navegação superior (desktop) -->
-    <q-header elevated class="bg-primary text-white">
-      <q-toolbar>
+    <q-header elevated class="bg-primary text-white" >
+      <q-toolbar >
         <q-toolbar-title>
           <q-icon name="rss_feed" size="md" class="q-mr-sm" />
           Meu Feed
@@ -14,7 +14,7 @@
         <div class="gt-sm">
           <q-btn flat round icon="notifications" />
           <q-btn flat round icon="mail" class="q-mx-sm" />
-          <q-btn flat round icon="person" />
+          <q-btn flat round icon="person" @click="irParaPerfil"/>
         </div>
 
         <!-- Menu mobile -->
@@ -82,6 +82,17 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+
+
+const router = useRouter()
+
+async function irParaPerfil() {
+  await router.push({ name: 'ver-perfil' })
+
+  // Ou navegando pelo caminho (path) se preferir:
+  // router.push('/perfil')
+}
 
 const leftDrawerOpen = ref(false);
 const tab = ref('home');

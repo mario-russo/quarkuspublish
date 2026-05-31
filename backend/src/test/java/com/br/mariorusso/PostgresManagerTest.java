@@ -20,9 +20,11 @@ public class PostgresManagerTest implements QuarkusTestResourceLifecycleManager 
         config.put("quarkus.datasource.jdbc.url", POSTGRES.getJdbcUrl());
         config.put("quarkus.datasource.username", POSTGRES.getUsername());
         config.put("quarkus.datasource.password", POSTGRES.getPassword());
-        config.put("quarkus.datasource.db-kind", "postgresql");
-        config.put("quarkus.hibernate-orm.database.generation", "drop-and-create");
-        config.put("quarkus.hibernate-orm.sql-load-script","import.sql");
+//        config.put("quarkus.datasource.db-kind", "postgresql");
+//        config.put("quarkus.hibernate-orm.database.generation", "none");
+//        config.put("quarkus.flyway.migrate-at-start", "true");
+//        config.put("quarkus.flyway.clean-at-start", "true");
+//        config.put("quarkus.hibernate-orm.sql-load-script","seed.sql");
         return config;
     }
 
