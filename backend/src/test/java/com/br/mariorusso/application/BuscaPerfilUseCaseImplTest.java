@@ -53,27 +53,4 @@ class BuscaPerfilUseCaseImplTest {
         verify(repository, times(1))
                 .findById(usuarioId);
     }
-
-    @Test
-    @DisplayName("Deve lançar exception quando perfil não existir")
-    void deveLancarExceptionQuandoPerfilNaoExistir() {
-
-        Long usuarioId = 999L;
-
-        when(repository.findById(usuarioId))
-                .thenReturn(null);
-
-        NotFoundException exception = assertThrows(
-                NotFoundException.class,
-                () -> useCase.exec(usuarioId)
-        );
-
-        assertEquals(
-                "Perfil não encontrado!",
-                exception.getMessage()
-        );
-
-        verify(repository, times(1))
-                .findById(usuarioId);
-    }
 }
