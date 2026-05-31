@@ -44,7 +44,7 @@ services:
     build:
       context: ./publicacao-frontend
       dockerfile: Dockerfile.prod
-      args:                              # 👈 dentro do build
+      args:                            
         VITE_API_URL: http://localhost:8080
     depends_on:
       - backend
