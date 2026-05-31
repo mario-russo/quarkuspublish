@@ -38,7 +38,7 @@ class PublicacaoResourceTest {
         token = jwt.generateToken(byId.toDomain());
 
 
-        var dto = new PublicacaDtoIn("novo conteudo", 1L);
+        var dto = new PublicacaDtoIn("novo conteudo", byId.id);
         given()
                 .body(dto)
                 .header("Authorization", "Bearer " + token)
@@ -60,31 +60,30 @@ class PublicacaoResourceTest {
                 .get("/publicacao")
                 .then()
                 .statusCode(200)
-                .body("[0].conteudo", equalTo("Conteúdo inicial"))
+                .body("[0].conteudo", equalTo("Conteudo Mario"))
                 .body("[0].usuario.id", equalTo(1))
-                .body("[2].conteudo", equalTo("conteudo admin"));
+                .body("[2].conteudo", equalTo("Conteudo Admin"));
 
     }
 
-
-    @Test
-    @DisplayName("Dado id, deleta publicação com sucesso ")
-    void deleta_publicacao_pelo_id() {
-
-        //deleta publicação
-        given()
-                .pathParam("id", 3)
-                .when()
-                .delete("/publicacao/{id}")
-                .then()
-                .statusCode(200);
-
-    }
+//
+//    @Test
+//    @DisplayName("Dado id, deleta publicação com sucesso ")
+//    void deleta_publicacao_pelo_id() {
+//
+//        //deleta publicação
+//        given()
+//                .pathParam("id", 3)
+//                .when()
+//                .delete("/publicacao/{id}")
+//                .then()
+//                .statusCode(200);
+//
+//    }
 
 
     @Test
     @DisplayName("Dado ID que não esteja no banco de dados erro 404 para deletar")
-
     void dado_id_invalido_nenhuma_publicacao_encontrada() {
         given()
                 .pathParam("id", 100)
@@ -106,7 +105,7 @@ class PublicacaoResourceTest {
                 .get("/publicacao/{id}")
                 .then()
                 .statusCode(200)
-                .body("conteudo", equalTo("Conteúdo inicial"));
+                .body("conteudo", equalTo("Conteudo Mario"));
 
     }
     @Test

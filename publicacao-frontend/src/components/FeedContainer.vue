@@ -14,9 +14,9 @@
         />
       </div>
 
-      <div v-for="post in sortedPosts" :key="post.id" class="q-mb-md">
+      <!-- <div v-for="post in sortedPosts" :key="post.id" class="q-mb-md">
         <PostCard :post="post" />
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

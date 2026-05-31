@@ -20,7 +20,7 @@ public class PublicacaoEntity extends PanacheEntityBase {
     @Column(nullable = false)
     public String conteudo;
 
-    @Column(nullable = false)
+    @Column(nullable = false,name = "data_publicacao")
     public LocalDateTime dataPublicacao;
 
     @ManyToOne(fetch = FetchType.LAZY)
