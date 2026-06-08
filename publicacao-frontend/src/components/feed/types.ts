@@ -33,9 +33,17 @@ export interface comentarios {
 export interface usuario{
   id : number
   nome:string
-
 }
 export interface CurtidaUsers{
   id:number
   usuario:number
+}
+
+export interface Publicacao {
+  publicacao_id: number;
+  usuario: usuario;
+  conteudo: string;
+  likes: CurtidaUsers[];
+  comentarios: comentarios[];
+  dataPublicacao: string;
 }

@@ -11,8 +11,8 @@
         @verSeguindo="verSeguindo"
       />
       <div class="text-h6 text-weight-bold q-mb-md q-mt-lg">Publicações</div>
-      <q-card v-for="value in publicacoes" :key="value.id">
-        <post-card :post="value" class="q-mb-sm"> </post-card>
+      <q-card v-for="value in publicacoes" :key="value.publicacao_id">
+        <post-card :post="value" class="q-mb-sm" @salva-like="atualizaPublicacao" @salva-post="atualizaPublicacao"> </post-card>
       </q-card>
     </div>
   </q-page>
@@ -24,9 +24,9 @@ import { useQuasar } from 'quasar';
 import PerfilSobre from 'src/components/perfil/PerfilSobre.vue';
 import { buscaPerfilPorId, type Perfil } from 'src/domain/PerfilService';
 import { buscaUsuarioPorId } from 'src/domain/usuario/UsuarioService';
-import { type PublishUser, publishUser } from 'src/domain/publishUser';
+import { publishUser } from 'src/domain/publishUser';
 import PostCard from 'src/components/feed/PostCard.vue';
-import type { Post } from 'src/components/feed/types';
+import type {Publicacao } from 'src/components/feed/types';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
 
@@ -48,12 +48,7 @@ const stats = reactive({
 });
 const nome = ref('');
 
-const publicacoes = ref<Post[]>([]);
-
-const formEdicao = reactive({
-  titulo: '',
-  sobre: '',
-});
+const publicacoes = ref<Publicacao[]>([]);
 
 const loadingPerfil = async () => {
   try {
@@ -65,12 +60,8 @@ const loadingPerfil = async () => {
     nome.value = usuario.data.nome || 'Usuário';
 
     perfil.usuarioId = usuario.data.id;
-    publicacoes.value = post.map(toPost);
+    publicacoes.value = post;
 
-    // perfil.titulo = response.data.titulo || ''
-    // perfil.sobre = response.data.sobre || ''
-    // perfil.id = response.data.id || 0
-    // perfil.usuarioId = response.data.usuarioId || 0
 
     stats.publicacoes = publicacoes.value.length || 0;
     stats.seguidores = 0;
@@ -84,9 +75,8 @@ const loadingPerfil = async () => {
     }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      // Nenhum console.error é chamado aqui, deixando o console limpo!
+      console.log(error)
     } else {
-      // 2. Só exibe o erro no console se NÃO for um 404 (erros reais de servidor/rede)
       console.error('Erro crítico ao carregar perfil:', error);
 
       $q.notify({
@@ -105,31 +95,27 @@ const verPublicacoes = async () => {
   }
 };
 
+const atualizaPublicacao =  (postAtualizado: Publicacao) => {
+  const findIndex =  publicacoes.value.findIndex((e) => e.publicacao_id === postAtualizado.publicacao_id);
+  if (findIndex !== -1) {
+   const post = publicacoes.value[findIndex];
+
+    if (post) {
+      post.likes.length = postAtualizado.likes.length;
+      post.likes = postAtualizado.likes
+      post.comentarios = postAtualizado.comentarios;
+    }
+  }
+
+}
+
 const verSeguidores = () => {
-  // $q.notify({ message: 'Ver seguidores', color: 'info' });
+  $q.notify({ message: 'Feature ainda não implementada! : seguidores!', color: 'info' });
 };
 
 const verSeguindo = () => {
-  // $q.notify({ message: 'Ver seguindo', color: 'info' });
+  $q.notify({ message: 'Feature ainda não implementada! : seguindo!', color: 'info' });
 };
-
-function toPost(e: PublishUser): Post {
-  return {
-    id: e.publicacao_id,
-    author: {
-      id: e.usuario.id,
-      name: e.usuario.nome,
-      position: '',
-      avatar: `https://i.pravatar.cc/150?img=${e.usuario.id}`,
-    },
-    content: e.conteudo,
-    date: new Date(e.dataPublicacao).toISOString(),
-    likes: e.likes.length,
-    comments: e.comentarios,
-    shares: 0,
-    likeUsers: e.likes,
-  };
-}
 
 onMounted(async () => {
   await loadingPerfil();
