@@ -1,7 +1,7 @@
 <template>
   <div class="row justify-center q-pt-md">
     <div class="col-12 col-md-8 col-lg-6">
-      <CreatePost @new-post="addPost" />
+      <CreatePost />
 
       <div class="flex justify-end q-mb-md">
         <q-select
@@ -14,97 +14,47 @@
         />
       </div>
 
-      <!-- <div v-for="post in sortedPosts" :key="post.id" class="q-mb-md">
-        <PostCard :post="post" />
-      </div> -->
+      <q-card v-for="post in posts" :key="post.publicacao_id" class="q-mb-md">
+        <PostCard :post="post" @salva-like="atualizaPublicacao" @salva-post="atualizaPublicacao"/>
+      </q-card>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import CreatePost from 'components/feed/CreatePost.vue';
 import PostCard from 'components/feed/PostCard.vue';
-import type { Post,comentarios } from 'components/feed/types';
+import type { Publicacao } from 'components/feed/types';
+import { buscaFeedGlobal } from 'src/domain/feed/FeedGlobal';
 
-// Dados mockados
-const posts = ref<Post[]>([
-  {
-    id: 1,
-    author: {
-      id: 1,
-      name: 'Maria Silva',
-      position: 'Desenvolvedora Front-end na Empresa X',
-      avatar: 'https://cdn.quasar.dev/img/avatar1.jpg',
-    },
-    content:
-      'Acabei de concluir um projeto incrível usando Vue 3 e Quasar Framework! Foi desafiador mas muito gratificante ver o resultado final. #frontend #vuejs #quasar',
-    date: '2023-05-15T10:30:00',
-    likes: 24,
-    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
-    shares: 2,
-  },
-  {
-    id: 2,
-    author: {
-      id: 2,
-      name: 'João Santos',
-      position: 'CTO na Startup Y',
-      avatar: 'https://cdn.quasar.dev/img/avatar2.jpg',
-    },
-    content:
-      'Compartilhando um artigo que escrevi sobre as melhores práticas para gestão de times remotos. Espero que seja útil!',
-    date: '2023-05-14T15:45:00',
-    image: 'https://cdn.quasar.dev/img/mountains.jpg',
-    likes: 56,
-    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
-    shares: 8,
-  },
-  {
-    id: 3,
-    author: {
-      id: 3,
-      name: 'Ana Oliveira',
-      position: 'UX Designer na Empresa Z',
-      avatar: 'https://cdn.quasar.dev/img/avatar3.jpg',
-    },
-    content:
-      'Estamos contratando UX Designers para nosso time! Se você tem experiência com design system e prototipagem, venha fazer parte dessa jornada conosco.',
-    date: '2023-05-12T09:15:00',
-    likes: 89,
-    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
-    shares: 15,
-  },
-]);
+const posts = ref<Publicacao[]>([]);
+
+const pagina = ref(0);
+const tamanho = ref(100);
 
 const sortBy = ref('recent');
 const sortOptions = ['recent', 'popular', 'following'];
 
-const sortedPosts = computed(() => {
-  return [...posts.value].sort((a, b) => {
-    if (sortBy.value === 'recent') {
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    } else {
-      return b.likes - a.likes;
-    }
-  });
-});
-
-const addPost = (content: string) => {
-  const newPost: Post = {
-    id: posts.value.length + 1,
-    author: {
-      id: 1,
-      name: 'Você',
-      position: 'Seu Cargo',
-      avatar: 'https://cdn.quasar.dev/img/avatar.png',
-    },
-    content,
-    date: new Date().toISOString(),
-    likes: 0,
-    comments: [{conteudo:'',dataComentario:new Date(),id:1,publicacao_id:1, usuario:{nome:"novo conteudo",id:1,}}],
-    shares: 0,
-  };
-  posts.value.unshift(newPost);
+const loadingPage = async () => {
+  const response = await buscaFeedGlobal(pagina.value, tamanho.value);
+  posts.value = response;
 };
+
+const atualizaPublicacao = (postAtualizado: Publicacao) => {
+  const findIndex = posts.value.findIndex((e) => e.publicacao_id === postAtualizado.publicacao_id);
+  if (findIndex !== -1) {
+    const post = posts.value[findIndex];
+
+    if (post) {
+      post.likes.length = postAtualizado.likes.length;
+      post.likes = postAtualizado.likes;
+      post.comentarios = postAtualizado.comentarios;
+    }
+  }
+};
+
+onMounted(async () => {
+  await loadingPage();
+});
 </script>

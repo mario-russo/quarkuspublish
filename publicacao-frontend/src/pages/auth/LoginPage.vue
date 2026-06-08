@@ -42,7 +42,6 @@
           </div>
         </q-form>
       </q-card-section>
-      {{ ambiente }}
 
       <q-card-section class="text-center q-pt-none">
         <p class="text-caption">
@@ -57,13 +56,13 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 
 import { AuthService } from '../../domain/api/authService';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from 'src/stores/auth-store';
 import { useUsuarioStore } from 'src/stores/usuario-store';
-
+import { Notify } from 'quasar';
 
 const router = useRouter();
 interface LoginForm {
@@ -75,8 +74,8 @@ interface LoginForm {
 const isLoading = ref(false);
 
 const form = ref<LoginForm>({
-  email: 'mario@gmail.com',
-  password: '123',
+  email: '',
+  password: '',
   remember: false,
 });
 
@@ -91,23 +90,30 @@ const passwordRules = [
   (val: string) => val.length >= 6 || 'Mínimo 6 caracteres',
 ];
 
-const ambiente = computed(() => {
-  return import.meta.env.VITE_APP_NAME;
-});
-
 async function login() {
-  const response = await AuthService.login({
-    email: form.value.email,
-    senha: form.value.password,
-  });
+  try {
+    const response = await AuthService.login({
+      email: form.value.email,
+      senha: form.value.password,
+    });
 
-  if (response.status === 200) {
-    const authStore = useAuthStore();
-    authStore.setToken(response.data.token);
+    if (response.status === 200) {
+      const authStore = useAuthStore();
+      authStore.setToken(response.data.token);
 
-    useUsuarioStore().setUsuario(response.data.usuario)
+      useUsuarioStore().setUsuario(response.data.usuario);
 
-    await router.push({ path: '/' });
+      await router.push({ path: '/' });
+    }
+  } catch (error) {
+
+    if (error.response?.status === 404) {
+      Notify.create({
+        type: 'negative',
+        message: 'Email ou senha Inválido',
+      });
+      return;
+    }
   }
 }
 </script>

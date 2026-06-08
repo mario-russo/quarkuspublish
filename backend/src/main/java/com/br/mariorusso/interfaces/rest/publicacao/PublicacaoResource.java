@@ -1,6 +1,7 @@
 package com.br.mariorusso.interfaces.rest.publicacao;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -100,11 +101,14 @@ public class PublicacaoResource {
     @Path("/user/{id}")
     public  Response buscaPublicacaoDoUsuario(@PathParam("id") Long id){
 
-
             String key = "usuario.id";
             List<Publicacao> response = publicacaoUseCase.findByfield(key, id);
 
-            List<PublicacaoDtoOut> dto = response.stream().map(PublicacaoDtoOut::dtoOut).toList();
+        List<PublicacaoDtoOut> dto = publicacaoUseCase.findByfield("usuario.id", id)
+                .stream()
+                .sorted(Comparator.comparing(Publicacao::getDataPublicacao).reversed())
+                .map(PublicacaoDtoOut::dtoOut)
+                .toList();
 
             return  Response.ok(dto).build();
 

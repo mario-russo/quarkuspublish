@@ -193,8 +193,7 @@ const handleFileUpload = (event: Event) => {
 const publishPost = async () => {
   if (postContent.value.trim()) {
     emit('new-post', postContent.value, mediaPreview.value);
-    const response = await salvePublish({ conteudo: postContent.value, usuario_id: 0 });
-    console.log(response)
+    await salvePublish({ conteudo: postContent.value, usuario_id: 0 });
     closeModal();
   }
 };
