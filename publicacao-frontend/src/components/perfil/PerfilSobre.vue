@@ -22,7 +22,7 @@
 
     <q-card-section>
       <!-- Descrição/Sobre -->
-      <div class="text-subtitle2 text-weight-bold q-mb-xs">Sobre</div>
+      <div class="text-subtitle2 text-weight-bold q-mb-xs perfil-sobre-texto ">Sobre</div>
       <div class="text-body2 text-grey-8">
         {{ perfil.sobre }}
       </div>
@@ -117,4 +117,7 @@ const emit = defineEmits<{
   background-color: rgba(0, 0, 0, 0.05);
   border-radius: 8px;
 }
+.perfil-sobre-texto {
+       white-space: pre-line;
+   }
 </style>

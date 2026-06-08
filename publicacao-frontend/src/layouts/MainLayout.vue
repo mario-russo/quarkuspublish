@@ -3,7 +3,7 @@
     <!-- Barra de navegação superior (desktop) -->
     <q-header elevated class="bg-primary text-white" >
       <q-toolbar >
-        <q-toolbar-title>
+        <q-toolbar-title @click="irParaFeed" class="cursor-pointer">
           <q-icon name="rss_feed" size="md" class="q-mr-sm" />
           Meu Feed
         </q-toolbar-title>
@@ -87,11 +87,16 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter()
 
+async function irParaFeed() {
+  await router.push({ name: 'ver-perfil' })
+
+  // Ou navegando pelo caminho (path) se preferir:
+  await router.push({name:"feed"})
+}
 async function irParaPerfil() {
   await router.push({ name: 'ver-perfil' })
 
   // Ou navegando pelo caminho (path) se preferir:
-  // router.push('/perfil')
 }
 
 const leftDrawerOpen = ref(false);

@@ -40,15 +40,17 @@ api.interceptors.request.use((config) => {
 
 // RESPONSE INTERCEPTOR
 api.interceptors.response.use(
-  (response) => response,
+   (response) => response,
 
-  (error) => {
+  async (error) => {
+
 
     if (error.response?.status === 401) {
 
       localStorage.removeItem('token');
 
       window.location.href = '/login';
+
     }
 
     return Promise.reject(

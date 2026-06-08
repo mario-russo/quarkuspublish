@@ -18,16 +18,9 @@
         <!-- <q-chip size="sm" color="primary" text-color="white">{{ publicacoes.length }}</q-chip> -->
       </div>
 
-      <!-- ==================== LISTA DE PUBLICAÇÕES ==================== -->
-
-      <q-card v-for="value in publicacoes" :key="value.id">
-        <post-card :post="value"> </post-card>
+      <q-card v-for="value in publicacoes" :key="value.publicacao_id">
+        <post-card :post="value" :view-actions="false" class="q-mb-md"> </post-card>
       </q-card>
-
-      <!-- Botão flutuante
-      <q-page-sticky position="bottom-right" :offset="[18, 18]">
-        <q-btn fab icon="add" color="primary" size="16px" @click="novaPublicacao" />
-      </q-page-sticky> -->
 
       <!-- Modal de Edição -->
       <q-dialog v-model="modalEditarAberto" persistent :maximized="$q.screen.lt.md">
@@ -92,9 +85,9 @@ import { useQuasar } from 'quasar';
 import PerfilSobre from 'src/components/perfil/PerfilSobre.vue';
 import { buscaPerfilUsuario, type Perfil, perfilSetUpdate } from 'src/domain/PerfilService';
 import { buscaUsuarioPorId } from 'src/domain/usuario/UsuarioService';
-import { type PublishUser, publishUser } from 'src/domain/publishUser';
+import { publishUser } from 'src/domain/publishUser';
 import PostCard from 'src/components/feed/PostCard.vue';
-import type { Post } from 'src/components/feed/types';
+import type { Publicacao } from 'src/components/feed/types';
 import { useRouter } from 'vue-router';
 
 const $q = useQuasar();
@@ -114,7 +107,7 @@ const stats = reactive({
 });
 const nome = ref('');
 
-const publicacoes = ref<Post[]>([]);
+const publicacoes = ref<Publicacao[]>([]);
 
 const modalEditarAberto = ref(false);
 const isPrimeiroCadastro = ref(false);
@@ -140,7 +133,7 @@ const loadingPerfil = async () => {
       nome.value = usuario.nome || 'Usuário';
 
       const res = await publishUser(usuario.id);
-      publicacoes.value = res.map(toPost);
+      publicacoes.value = res;
 
       perfil.titulo = response.data.titulo || '';
       perfil.sobre = response.data.sobre || '';
@@ -231,23 +224,6 @@ const verSeguindo = () => {
   // $q.notify({ message: 'Ver seguindo', color: 'info' });
 };
 
-function toPost(e: PublishUser): Post {
-  return {
-    id: e.publicacao_id,
-    author: {
-      id: e.usuario.id,
-      name: e.usuario.nome,
-      position: '',
-      avatar: `https://i.pravatar.cc/150?img=${e.usuario.id}`,
-    },
-    content: e.conteudo,
-    date: new Date(e.dataPublicacao).toISOString(),
-    likes: e.likes.length,
-    comments: e.comentarios,
-    shares: 0,
-    likeUsers: e.likes,
-  };
-}
 
 // Lifecycle
 onMounted(async () => {
