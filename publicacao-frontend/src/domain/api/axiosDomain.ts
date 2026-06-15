@@ -1,8 +1,22 @@
 import axios from 'axios';
 import type { AxiosInstance, AxiosRequestConfig } from 'axios';
 
+declare global {
+  interface Window {
+    VITE_API_URL?: string;
+  }
+}
+
+// 2. Tenta ler da janela global (K8s/Compose). Se não existir ou for o placeholder, usa a do Vite
+const getBaseURL = (): string => {
+  if (window.VITE_API_URL && !window.VITE_API_URL.startsWith('__VITE')) {
+    return window.VITE_API_URL;
+  }
+  return (import.meta.env.VITE_API_URL as string) || 'http://localhost:8080';
+};
+
 const config: AxiosRequestConfig = {
-  baseURL: import.meta.env.VITE_API_URL as string,
+  baseURL: getBaseURL(),
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',

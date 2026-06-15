@@ -1,56 +1,140 @@
-name: Quarkus Build and Test
+name: Quarkus and Quasar CI/CD
 
-on: 
+on:
   push:
     branches: [ main, develop ]
   pull_request:
     branches: [ main, develop ]
 
-jobs:
-  build-and-test:
-    runs-on: ubuntu-latest
+permissions:
+  contents: read
+  packages: write
 
+jobs:
+  # -------------------------------------------------------------
+  # JOB 1: Testes rápidos do Backend (Modo JVM com Banco correto)
+  # -------------------------------------------------------------
+  test-backend:
+    runs-on: ubuntu-latest
     services:
       postgres:
         image: postgres:15-alpine
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: meubanco
+          POSTGRES_USER: mario-russo
+          POSTGRES_PASSWORD: mario-russo
+          POSTGRES_DB: banco
         options: >-
-          --health-cmd="pg_isready -U postgres"
+          --health-cmd="pg_isready -U mario-russo -d banco"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     env:
-      DB_USER: postgres
-      BANCO_DE_DADO: postgresql
-      DB_PASSWORD: postgres
-      DB_URL: jdbc:postgresql://localhost:5432/meubanco
-      PRIVATE_KEY: secrets/private.pem
-      ISSUER: example-issuer
-      PUBLIC_KEY: secrets/public.pem
+      KIND: postgresql
+      DB_USER: mario-russo
+      DB_PASSWORD: mario-russo
+      DB_URL: jdbc:postgresql://localhost:5432/banco
+      ISSUER: mario-russo
+      PUBLIC_KEY: classpath:/publicKey.pem
+      PRIVATE_KEY: classpath:/privateKey.pem
 
     steps:
       - name: 📥 Checkout do código
         uses: actions/checkout@v4
 
       - name: ☕ Configurar Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
+          cache: 'maven'
 
-      - name: 🔐 Criar arquivos de chave JWT
+      # CORREÇÃO: Injeta de forma segura no Classpath (recursos do projeto)
+      - name: 🔐 Injetar chaves JWT no Classpath para os testes
+        working-directory: ./backend
+        env:
+          JWT_PRIVATE_KEY: ${{ secrets.private_key }}
+          JWT_PUBLIC_KEY: ${{ secrets.public_key }}
+        run: |
+          mkdir -p src/main/resources
+          echo "$JWT_PRIVATE_KEY" > src/main/resources/privateKey.pem
+          echo "$JWT_PUBLIC_KEY" > src/main/resources/publicKey.pem
+
+      - name: 🧪 Executar Testes em Modo JVM
+        working-directory: ./backend
+        run: mvn -B test
+
+  build-backend:
+    needs: test-backend
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository }}/backend-quarkus
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: ☕ Configurar Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      # CORREÇÃO: Garante as chaves no Classpath para o GraalVM compilar nativo com sucesso
+      - name: 🔐 Injetar chaves JWT no Classpath para o Build Nativo
+        working-directory: ./backend
+        env:
+          JWT_PRIVATE_KEY: ${{ secrets.private_key }}
+          JWT_PUBLIC_KEY: ${{ secrets.public_key }}
+        run: |
+          mkdir -p src/main/resources
+          echo "$JWT_PRIVATE_KEY" > src/main/resources/privateKey.pem
+          echo "$JWT_PUBLIC_KEY" > src/main/resources/publicKey.pem
+
+      - name: 🔑 Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # CORREÇÃO: -Pnative ativado e empacotamento Docker pelo Quarkus Jib para o GHCR
+      - name: 🔨 Build Nativo e Push do Backend
         working-directory: ./backend
         run: |
-          mkdir -p secrets
-          echo "${{ secrets.PRIVATE_KEY }}" > secrets/private.pem
-          echo "${{ secrets.PUBLIC_KEY }}" > secrets/public.pem
+          mvn -B package -Pnative \
+            -Dquarkus.container-image.build=true \
+            -Dquarkus.container-image.push=true \
+            -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:latest
 
-      - name: 🔨 Build e Teste com Maven (Profile de produção)
-        working-directory: ./backend
-        run: mvn -B package -Dnative
+      # CORREÇÃO: Dispara o Hook do Render que você configurou
+      - name: 🚀 Disparar Deploy no Render (Backend)
+        run: |
+          curl -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
+
+  build-frontend:
+    needs: test-backend
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
+
+      - name: 🔑 Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: 🐳 Build e Push do Frontend (Quasar)
+        uses: docker/build-push-action@v5
+        with:
+          context: ./publicacao-frontend
+          file: ./publicacao-frontend/Dockerfile.prod
+          push: true
+          tags: ghcr.io/${{ github.repository }}/frontend-vue:latest

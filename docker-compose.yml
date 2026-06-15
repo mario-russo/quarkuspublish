@@ -44,8 +44,10 @@ services:
     build:
       context: ./publicacao-frontend
       dockerfile: Dockerfile.prod
-      args:                            
-        VITE_API_URL: http://localhost:8080
+      # args:                            
+      #   VITE_API_URL: http://localhost:8080
+    environment:                            
+      - VITE_API_URL=http://localhost:8080
     depends_on:
       - backend
     ports:
