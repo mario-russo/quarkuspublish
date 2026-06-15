@@ -54,8 +54,8 @@ jobs:
       - name: 🔐 Injetar chaves JWT no Classpath para os testes
         working-directory: ./backend
         env:
-          JWT_PRIVATE_KEY: ${{ secrets.private_key }}
-          JWT_PUBLIC_KEY: ${{ secrets.public_key }}
+          JWT_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          JWT_PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
         run: |
           mkdir -p src/main/resources
           echo "$JWT_PRIVATE_KEY" > src/main/resources/privateKey.pem
@@ -87,8 +87,8 @@ jobs:
       - name: 🔐 Injetar chaves JWT no Classpath para o Build Nativo
         working-directory: ./backend
         env:
-          JWT_PRIVATE_KEY: ${{ secrets.private_key }}
-          JWT_PUBLIC_KEY: ${{ secrets.public_key }}
+          JWT_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
+          JWT_PUBLIC_KEY: ${{ secrets.PUBLIC_KEY }}
         run: |
           mkdir -p src/main/resources
           echo "$JWT_PRIVATE_KEY" > src/main/resources/privateKey.pem
