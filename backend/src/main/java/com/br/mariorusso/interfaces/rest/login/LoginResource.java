@@ -36,33 +36,32 @@ public class LoginResource {
     @POST
     @Path("/login")
     @PermitAll
-    public Response login(LoginDtoIn login){
-        try{
-            UsuarioEntity usuario = loginUsuario.login(login.email(), login.senha());
-            Usuario user = usuario.toDomain();
+    public Response login(LoginDtoIn login) {
+        UsuarioEntity usuario = loginUsuario.login(login.email(), login.senha());
 
-
-            String token = jwtService.generateToken(user);
-            return Response.ok(Map.of("token",token,"usuario",Map.of(
-                    "id", user.getId(),
-                    "nome", user.getNome(),
-                    "email", user.getEmail()
-
-            ))).build();
-
-        } catch (Exception e) {
-            return  Response.status(Response.Status.NOT_FOUND).entity(Map.of("Erro","Usuário não encontrado!!!")).build();
+        if (usuario == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("erro", "Email ou senha inválidos"))
+                    .build();
         }
+        Usuario user = usuario.toDomain();
 
 
+        String token = jwtService.generateToken(user);
+        return Response.ok(Map.of("token", token, "usuario", Map.of(
+                "id", user.getId(),
+                "nome", user.getNome(),
+                "email", user.getEmail()
 
+        ))).build();
     }
+
     @Path("/register")
     @POST()
     @PermitAll
-    public  Response register (RegisterDto dto){
+    public Response register(RegisterDto dto) {
         Login login = (Login) loginUsuario;
         login.register(dto);
-        return  Response.ok("Usuário salvo com sucesso!!").build();
+        return Response.ok("Usuário salvo com sucesso!!").build();
     }
 }

@@ -34,7 +34,7 @@ class LoginResourceTest {
                 .when()
                 .post("/auth/login")
                 .then()
-                .statusCode(404);
+                .statusCode(401);
 
     }
         @Test
