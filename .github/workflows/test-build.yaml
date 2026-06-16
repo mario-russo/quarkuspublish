@@ -108,7 +108,7 @@ jobs:
           mvn -B package -Pnative \
             -Dquarkus.container-image.build=true \
             -Dquarkus.container-image.push=true \
-            -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:latest
+            -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       # CORREÇÃO: Dispara o Hook do Render que você configurou
       - name: 🚀 Disparar Deploy no Render (Backend)
