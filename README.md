@@ -1,85 +1,148 @@
-# 📘 Quarkus Publish API
+# 📘 Quarkus Feed Platform - Full Stack Application com Clean Architecture
 
-API backend desenvolvida em Java com Quarkus para uma plataforma de publicações com autenticação via JWT, arquitetura Clean, testes automatizados e integração contínua com Docker e GitHub Actions.
+<!-- BADGES DINÂMICOS (Substitua SEU_USUARIO e SEU_REPOSITORIO pelos seus dados reais do GitHub) -->
+[![CI - Backend](https://github.com/mario-russo/quarkuspublish/actions/workflows/test-build.yaml/badge.svg)](https://github.com/mario-russo/quarkuspublish/actions/workflows/test-build.yaml)
+[![GHCR Version](https://img.shields.io/badge/GHCR-latest-blue?logo=github)](https://github.com/mario-russo/quarkuspublish/pkgs/container/quarkuspublish%2Fbackend-quarkus)
+![Java Version](https://img.shields.io/badge/Java-21-blue)
+![Quarkus Version](https://img.shields.io/badge/Quarkus-3.1.0-blue)
+![Vue Version](https://img.shields.io/badge/Vue-3.x-green)
+![Docker](https://img.shields.io/badge/Docker-Ready-blue)
+
+Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta por uma API backend desenvolvida em Java com Quarkus sob os princípios da *Clean Architecture* e uma aplicação frontend moderna construída em Vue 3. O ecossistema conta com autenticação e autorização via JWT, banco de dados PostgreSQL gerenciado pelo Supabase, testes automatizados robustos e esteiras automatizadas de CI/CD via GitHub Actions com deploy contínuo na Vercel e Render.
 
 ---
 
 ## 🚀 Funcionalidades
 
-- Registro e login de usuários
-- Publicação de posts
-- Curtidas e comentários
-- Autenticação via JWT
-- Camadas separadas por responsabilidade
-- Testes de unidade com JUnit e Mockito
-- Integração contínua com GitHub Actions
-- Docker para ambiente isolado
+- **Gerenciamento de Usuários:** Cadastro, autenticação e emissão de tokens seguros via JWT.
+- **Interação Social:** Criação de publicações, sistema de curtidas e comentários em tempo real.
+- **Perfis de Usuários:** Separação dinâmica entre visibilidade de perfil público e privado.
+- **Distribuição de Conteúdo:** Feed global consolidado para exibição das publicações da plataforma.
+
+---
+
+
+
+## ⚙️ Tecnologias Utilizadas
+
+| Tecnologia / Conceito | Descrição |
+| :--- | :--- |
+| ✅   **Java 17** | Linguagem de programação principal estável e fortemente tipada. |
+| ✅   **Quarkus** | Framework de alto desempenho focado em soluções *Cloud Native Java*. |
+| ✅   **Vue 3** | Framework progressivo para a construção da interface do usuário (Frontend). |
+| ✅   **Clean Architecture** | Padrão arquitetural focado no desacoplamento e isolamento das regras de negócio. |
+| ✅   **PostgreSQL** | Banco de dados relacional robusto utilizado para a persistência da aplicação. |
+| ✅   **Supabase** | Backend-as-a-Service (BaaS) utilizado para hospedar o banco de dados PostgreSQL em nuvem. |
+| ✅   **Hibernate ORM (Panache)** | Camada de persistência simplificada com o padrão Active Record / Repository. |
+| ✅   **Flyway** | Ferramenta de versionamento e migração automatizada de esquemas de banco de dados. |
+| ✅   **SmallRye JWT** | Implementação de segurança padrão para autenticação e autorização via tokens *stateless*. |
+| ✅   **JUnit 5 & Mockito** | Frameworks padrão da indústria para criação de asserções e isolamento de testes. |
+| ✅   **Testcontainers** | Gerenciamento de containers Docker dinâmicos em tempo de teste para simulação real de banco de dados. |
+| ✅   **Docker & Compose** | Containerização completa e orquestração ágil do ambiente de desenvolvimento local. |
+| ✅   **GitHub Actions** | Automação completa da esteira de CI/CD para compilação, validação e qualidade. |
+| ✅   **Render** | Plataforma em nuvem utilizada para o deploy automatizado e hospedagem da API Quarkus. |
+| ✅   **Vercel** | Plataforma de nuvem otimizada para o deploy contínuo da aplicação Vue 3. |
+| ✅   **GraalVM (Native Image)** | Suporte à compilação nativa gerando tempos de inicialização na casa dos milissegundos. |
 
 ---
 
 ## 🧱 Arquitetura do Projeto
 
-Este projeto segue os princípios da **Clean Architecture**, com inspiração na **Arquitetura Hexagonal (Ports and Adapters)**, promovendo desacoplamento e testabilidade.
+Este projeto segue os princípios da **Clean Architecture**, com inspiração na **Arquitetura Hexagonal (Ports and Adapters)**, promovendo desacoplamento e alta testabilidade.
 
 ### Camadas:
 
-- **Domain (Núcleo)**: Entidades e interfaces que representam a lógica de negócio, independentes de frameworks.
-- **Use Cases**: Casos de uso isolados que orquestram as regras do domínio.
-- **Interface Adapters**:
-  - **Entrada**: Controladores REST com Quarkus (`*Resource`)
-  - **Saída**: Implementações de repositórios (`*RepositoryImpl`)
-- **Frameworks & Drivers**: Camada externa com Quarkus, JPA (Panache), JWT, etc.
+- **Domain (Núcleo):** Entidades e interfaces que representam a lógica de negócio, totalmente independentes de frameworks.
+- **Use Cases:** Casos de uso isolados que orquestram e executam as regras fundamentais do domínio.
+- **Interface Adapters:**
+  - **Entrada (Inbound):** Controladores REST com Quarkus (`*Resource`) responsáveis por expor os endpoints.
+  - **Saída (Outbound):** Implementações concretas de repositórios (`*RepositoryImpl`) que traduzem dados para a infraestrutura.
+- **Frameworks & Drivers:** Camada mais externa contendo tecnologias específicas como Quarkus, JPA (Panache), JWT, etc.
 
-> A comunicação entre as camadas é feita via interfaces, garantindo baixo acoplamento e fácil manutenção.
-
----
-
-## 🧪 Testes
-
-O projeto utiliza **JUnit 5** e **Mockito** para testes de unidade. Os casos de uso são testados isoladamente, facilitando manutenção e refatoração.
+> 🛠️ A comunicação entre as camadas é feita estritamente via interfaces, garantindo baixo acoplamento e fácil manutenção.
 
 ---
 
-## ⚙️ Tecnologias utilizadas
+## 🧪 Estratégia de Testes Automatizados
 
-| Tecnologia     | Descrição                             |
-|----------------|----------------------------------------|
-| Java 17        | Linguagem principal                    |
-| Quarkus        | Framework backend                      |
-| JPA (Panache)  | Persistência de dados                  |
-| JWT            | Autenticação via token                 |
-| JUnit 5        | Testes de unidade                      |
-| Mockito        | Mocking em testes                      |
-| Docker         | Containerização                        |
-| GitHub Actions | Integração contínua                    |
+A estabilidade e a qualidade do código são garantidas através de uma abordagem de testes robusta:
+
+* **Testes de Unidade (JUnit 5 & Mockito):** Isolamento total dos casos de uso (`Use Cases`) e entidades de domínio, simulando dependências externas através de mocks para validação rápida de regras complexas.
+* **Testes de Integração (Testcontainers):** Validação real de componentes de infraestrutura, onde containers **Docker** reais do **PostgreSQL** são inicializados dinamicamente durante a execução da suíte de testes.
 
 ---
 
-## 📦 Como rodar localmente
+---
+
+## 🗄 Banco de Dados
+
+Estrutura relacional hospedada no Supabase utilizando PostgreSQL.
+
+<img width="1015" height="858" alt="Screenshot from 2026-06-16 12-00-35" src="https://github.com/user-attachments/assets/bf44d4ff-b50a-4c1e-8b7b-90885553a3bc" />
+
+### Principais Entidades
+
+* Usuario
+* Publicacao
+* Comentario
+* Curtida
+
+---
+---
+## 📸 Demonstração
+### Tela de Login
+
+<img width="964" height="949" alt="Screenshot from 2026-06-16 00-44-53" src="https://github.com/user-attachments/assets/5fa4aced-e8c5-4937-89ee-1bb474c1ef4c" />
+
+### Cadastro
+
+<img width="964" height="949" alt="Screenshot from 2026-06-16 00-49-22" src="https://github.com/user-attachments/assets/d62ebf6e-75b8-400c-bbd3-1aecde1c35e6" />
+
+### Feed Global - Curtida - Comentário
+
+<img width="1840" height="999" alt="Screenshot from 2026-06-16 11-57-18" src="https://github.com/user-attachments/assets/1f3e6672-bfb2-4145-86d4-c95a39118345" />
+
+### Perfil
+
+<img width="1840" height="999" alt="Screenshot from 2026-06-16 11-57-41" src="https://github.com/user-attachments/assets/6a4c812a-f2b8-4b87-b5d2-aae90fc17952" />
+
+### Perfil publico
+
+<img width="1840" height="999" alt="Screenshot from 2026-06-16 11-57-32" src="https://github.com/user-attachments/assets/073d6525-40cd-49b2-bfc8-2d3d8d502cd2" />
+
+
+### Editar Perfil
+
+<img width="1840" height="999" alt="Screenshot from 2026-06-16 11-57-47" src="https://github.com/user-attachments/assets/2c94944c-c8b1-4e0b-9657-e2f65bbd4f2d" />
+
+---
+
+## 📦 Como Rodar Localmente
 
 ### Pré-requisitos
-
 - Java 17
 - Maven
-- Docker (opcional)
-- Quarkus CLI (opcional)
+- Docker e Docker Compose instalado
 
-### Executar a aplicação:
- Para roda a aplicação completa bastar ter o docker e docker compose instalado
- com o comando 
+### Executar a aplicação completa via Docker:
+Para subir o ecossistema completo (Backend e Frontend sincronizados) com um único comando, execute na raiz do projeto:
+
 ```bash
-docker compose up --build 
+docker compose up --build
+```
+Após o build inicial, o frontend estará acessível em: **`http://localhost:9000/`**
 
-pode ser acessar em http://localhost:9000/
+---
+
+## 🔧 Configuração de Variáveis de Ambiente (.env)
+
+### 1. Variáveis para o Backend
+O backend está configurado para se conectar a um banco de dados relacional. Você deve criar um arquivo `.env` na pasta do backend seguindo o modelo abaixo (caso as chaves não sejam preenchidas, o sistema tentará adotar os valores padrões do projeto). 
+
+O backend local responde na porta **`http://localhost:8080`**.
 
 
-
-### Env de exemplo para o backend
-a parte do backend está configurada para receber o banco de dados.
-tem criando um env passando o as variavel como segui o exempplo lembando que caso ele não
-tenha uma as keys usuara as que estão no projeto 
-para ter acessar ao backend pode ir para http://localhost:8080
-```.env
+```env
 KIND=postgresql
 DB_USER=mario-russo
 DB_PASSWORD=mario-russo
@@ -87,9 +150,16 @@ DB_URL=jdbc:postgresql://localhost:5432/banco
 
 PUBLIC_KEY=classpath:secrets/publicKey.pem
 PRIVATE_KEY=classpath:secrets/privateKey.pem
+```
 
-### Env para FrontEnd
-env apenas para conectar ao backend 
-para acessar a aplicação frontend pode ir para  http://localhost:9000/
-```bash
-VITE_API_URL = http://localhost:8080/
+### 2. Variáveis para o Frontend
+Crie um arquivo `.env` na pasta do frontend apenas para apontar o endereço da API que o Vue 3 deve consumir:
+
+```env
+VITE_API_URL=http://localhost:8080/
+```
+
+---
+Desenvolvido por [Mário Russo](https://github.com).
+
+
