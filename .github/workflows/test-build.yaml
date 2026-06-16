@@ -109,6 +109,14 @@ jobs:
             -Dquarkus.container-image.build=true \
             -Dquarkus.container-image.push=true \
             -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:${{ github.sha }}
+            
+      - name: 🏷️ Atualizar latest
+        run: |
+          docker pull "${{ env.IMAGE_NAME }}:${{ github.sha }}"
+          docker tag \
+            "${{ env.IMAGE_NAME }}:${{ github.sha }}" \
+            "${{ env.IMAGE_NAME }}:latest"
+          docker push "${{ env.IMAGE_NAME }}:latest"
 
       # CORREÇÃO: Dispara o Hook do Render que você configurou
       - name: 🚀 Disparar Deploy no Render (Backend)
