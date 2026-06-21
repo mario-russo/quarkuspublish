@@ -1,5 +1,8 @@
 <template>
-  <q-page class="bg-grey-2">
+  <skeleton-card-post v-if="skeleton">
+
+  </skeleton-card-post>
+  <q-page v-else class="bg-grey-2">
     <div class="profile-container q-pa-md">
       <perfil-sobre
         :perfil="perfil"
@@ -89,6 +92,7 @@ import { publishUser } from 'src/domain/publishUser';
 import PostCard from 'src/components/feed/PostCard.vue';
 import type { Publicacao } from 'src/components/feed/types';
 import { useRouter } from 'vue-router';
+import SkeletonCardPost from 'src/components/SkeletonCardPost.vue';
 
 const $q = useQuasar();
 const router = useRouter();
@@ -111,6 +115,7 @@ const publicacoes = ref<Publicacao[]>([]);
 
 const modalEditarAberto = ref(false);
 const isPrimeiroCadastro = ref(false);
+const skeleton = ref(false)
 
 const formEdicao = reactive({
   titulo: '',
@@ -227,7 +232,10 @@ const verSeguindo = () => {
 
 // Lifecycle
 onMounted(async () => {
+  skeleton.value = !skeleton.value
   await loadingPerfil();
+  skeleton.value = !skeleton.value
+
 });
 </script>
 

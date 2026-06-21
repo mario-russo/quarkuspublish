@@ -1,5 +1,6 @@
 <template>
-  <q-page class="bg-grey-2">
+  <skeleton-card-post v-if="skeleton"> </skeleton-card-post>
+  <q-page v-else class="bg-grey-2">
     <div class="profile-container q-pa-md">
       <perfil-sobre
         :perfil="perfil"
@@ -12,7 +13,13 @@
       />
       <div class="text-h6 text-weight-bold q-mb-md q-mt-lg">Publicações</div>
       <q-card v-for="value in publicacoes" :key="value.publicacao_id">
-        <post-card :post="value" class="q-mb-sm" @salva-like="atualizaPublicacao" @salva-post="atualizaPublicacao"> </post-card>
+        <post-card
+          :post="value"
+          class="q-mb-sm"
+          @salva-like="atualizaPublicacao"
+          @salva-post="atualizaPublicacao"
+        >
+        </post-card>
       </q-card>
     </div>
   </q-page>
@@ -26,14 +33,15 @@ import { buscaPerfilPorId, type Perfil } from 'src/domain/PerfilService';
 import { buscaUsuarioPorId } from 'src/domain/usuario/UsuarioService';
 import { publishUser } from 'src/domain/publishUser';
 import PostCard from 'src/components/feed/PostCard.vue';
-import type {Publicacao } from 'src/components/feed/types';
+import type { Publicacao } from 'src/components/feed/types';
 import { useRoute, useRouter } from 'vue-router';
 import axios from 'axios';
+import SkeletonCardPost from 'src/components/SkeletonCardPost.vue';
 
 const $q = useQuasar();
 const route = useRoute();
 const router = useRouter();
-
+const skeleton = ref(false);
 const perfil = reactive<Perfil>({
   titulo: '',
   sobre: '',
@@ -62,7 +70,6 @@ const loadingPerfil = async () => {
     perfil.usuarioId = usuario.data.id;
     publicacoes.value = post;
 
-
     stats.publicacoes = publicacoes.value.length || 0;
     stats.seguidores = 0;
     stats.seguindo = 0;
@@ -75,7 +82,7 @@ const loadingPerfil = async () => {
     }
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.status === 404) {
-      console.log(error)
+      console.log(error);
     } else {
       console.error('Erro crítico ao carregar perfil:', error);
 
@@ -95,19 +102,20 @@ const verPublicacoes = async () => {
   }
 };
 
-const atualizaPublicacao =  (postAtualizado: Publicacao) => {
-  const findIndex =  publicacoes.value.findIndex((e) => e.publicacao_id === postAtualizado.publicacao_id);
+const atualizaPublicacao = (postAtualizado: Publicacao) => {
+  const findIndex = publicacoes.value.findIndex(
+    (e) => e.publicacao_id === postAtualizado.publicacao_id,
+  );
   if (findIndex !== -1) {
-   const post = publicacoes.value[findIndex];
+    const post = publicacoes.value[findIndex];
 
     if (post) {
       post.likes.length = postAtualizado.likes.length;
-      post.likes = postAtualizado.likes
+      post.likes = postAtualizado.likes;
       post.comentarios = postAtualizado.comentarios;
     }
   }
-
-}
+};
 
 const verSeguidores = () => {
   $q.notify({ message: 'Feature ainda não implementada! : seguidores!', color: 'info' });
@@ -118,7 +126,9 @@ const verSeguindo = () => {
 };
 
 onMounted(async () => {
+  skeleton.value = !skeleton.value;
   await loadingPerfil();
+  skeleton.value = !skeleton.value;
 });
 </script>
 

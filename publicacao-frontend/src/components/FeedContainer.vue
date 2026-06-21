@@ -1,5 +1,6 @@
 <template>
-  <div class="row justify-center q-pt-md">
+   <Skelleton-card-post v-if="skeleton"/>
+  <div v-else class="row justify-center q-pt-md">
     <div class="col-12 col-md-8 col-lg-6">
       <CreatePost />
 
@@ -27,11 +28,13 @@ import CreatePost from 'components/feed/CreatePost.vue';
 import PostCard from 'components/feed/PostCard.vue';
 import type { Publicacao } from 'components/feed/types';
 import { buscaFeedGlobal } from 'src/domain/feed/FeedGlobal';
+import  SkelletonCardPost from './SkeletonCardPost.vue'
 
 const posts = ref<Publicacao[]>([]);
 
 const pagina = ref(0);
 const tamanho = ref(100);
+const skeleton = ref(false)
 
 const sortBy = ref('recent');
 const sortOptions = ['recent', 'popular', 'following'];
@@ -55,6 +58,9 @@ const atualizaPublicacao = (postAtualizado: Publicacao) => {
 };
 
 onMounted(async () => {
+  skeleton.value = !skeleton.value
   await loadingPage();
+  skeleton.value = !skeleton.value
+
 });
 </script>
