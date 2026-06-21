@@ -1,8 +1,10 @@
 package com.br.mariorusso.application;
 
-import com.br.mariorusso.auth.Roles;
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.interfaces.rest.login.RegisterDto;
+import com.br.mariorusso.application.auth.Roles;
+import com.br.mariorusso.application.usecase.Login;
+import com.br.mariorusso.application.usecase.UsuarioUseCase;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.adapter.in.rest.login.RegisterDto;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

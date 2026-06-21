@@ -22,12 +22,11 @@ Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta
 ---
 
 
-
 ## ⚙️ Tecnologias Utilizadas
 
 | Tecnologia / Conceito | Descrição |
 | :--- | :--- |
-| ✅   **Java 17** | Linguagem de programação principal estável e fortemente tipada. |
+| ✅   **Java 21** | Linguagem de programação principal estável e fortemente tipada. |
 | ✅   **Quarkus** | Framework de alto desempenho focado em soluções *Cloud Native Java*. |
 | ✅   **Vue 3** | Framework progressivo para a construção da interface do usuário (Frontend). |
 | ✅   **Clean Architecture** | Padrão arquitetural focado no desacoplamento e isolamento das regras de negócio. |
@@ -43,24 +42,63 @@ Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta
 | ✅   **Render** | Plataforma em nuvem utilizada para o deploy automatizado e hospedagem da API Quarkus. |
 | ✅   **Vercel** | Plataforma de nuvem otimizada para o deploy contínuo da aplicação Vue 3. |
 | ✅   **GraalVM (Native Image)** | Suporte à compilação nativa gerando tempos de inicialização na casa dos milissegundos. |
+| ✅   **Ports and Adapters (Hexagonal Architecture)** | Separação entre domínio, casos de uso e adaptadores de entrada e saída. |
 
 ---
 
-## 🧱 Arquitetura do Projeto
+## 🏗️ Arquitetura
 
-Este projeto segue os princípios da **Clean Architecture**, com inspiração na **Arquitetura Hexagonal (Ports and Adapters)**, promovendo desacoplamento e alta testabilidade.
 
-### Camadas:
+O projeto é uma rede social desenvolvida em Java com Quarkus, seguindo os princípios de **Clean Architecture** e **Ports and Adapters (Hexagonal Architecture)**. A estrutura foi projetada para manter as regras de negócio desacopladas das tecnologias externas, facilitando manutenção, testes e evolução da aplicação.
 
-- **Domain (Núcleo):** Entidades e interfaces que representam a lógica de negócio, totalmente independentes de frameworks.
-- **Use Cases:** Casos de uso isolados que orquestram e executam as regras fundamentais do domínio.
-- **Interface Adapters:**
-  - **Entrada (Inbound):** Controladores REST com Quarkus (`*Resource`) responsáveis por expor os endpoints.
-  - **Saída (Outbound):** Implementações concretas de repositórios (`*RepositoryImpl`) que traduzem dados para a infraestrutura.
-- **Frameworks & Drivers:** Camada mais externa contendo tecnologias específicas como Quarkus, JPA (Panache), JWT, etc.
+A arquitetura é dividida em:
 
-> 🛠️ A comunicação entre as camadas é feita estritamente via interfaces, garantindo baixo acoplamento e fácil manutenção.
+- **Domain**: entidades e regras centrais do negócio.
+- **Application**: casos de uso e portas de entrada e saída.
+- **Adapters In**: camada responsável por receber requisições HTTP e autenticação.
+- **Adapters Out**: comunicação com banco de dados e demais recursos externos.
+- **Persistence**: implementação dos repositórios utilizando PostgreSQL e Hibernate Panache.
 
+
+```
+src/main/java/com/br/mariorusso
+
+├── domain
+│   └── model
+│
+├── application
+│   ├── port
+│   │   ├── in
+│   │   └── out
+│   └── usecase
+│
+├── adapter
+│   ├── in
+│   │   ├── auth
+│   │   └── rest
+│   └── out
+│       └── persistence
+│           ├── entity
+│           └── repository
+│
+└── resources
+```
+
+### Fluxo da aplicação
+
+```text
+HTTP Request
+     ↓
+REST Controller (Adapter In)
+     ↓
+Use Case
+     ↓
+Port Out
+     ↓
+Repository Adapter
+     ↓
+PostgreSQL
+```
 ---
 
 ## 🧪 Estratégia de Testes Automatizados
@@ -120,7 +158,7 @@ Estrutura relacional hospedada no Supabase utilizando PostgreSQL.
 ## 📦 Como Rodar Localmente
 
 ### Pré-requisitos
-- Java 17
+- Java 21
 - Maven
 - Docker e Docker Compose instalado
 
