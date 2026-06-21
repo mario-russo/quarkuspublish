@@ -1,4 +1,4 @@
-package com.br.mariorusso.core.model;
+package com.br.mariorusso.domain.model;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

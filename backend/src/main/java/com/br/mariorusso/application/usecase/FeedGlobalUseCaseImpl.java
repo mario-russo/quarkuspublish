@@ -1,4 +1,4 @@
-package com.br.mariorusso.application;
+package com.br.mariorusso.application.usecase;
 
 import com.br.mariorusso.domain.model.Publicacao;
 import com.br.mariorusso.application.ports.out.BuscaFeedGlobalRespository;

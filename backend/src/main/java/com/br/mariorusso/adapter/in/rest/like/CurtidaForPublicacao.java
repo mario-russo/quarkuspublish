@@ -1,7 +1,7 @@
-package com.br.mariorusso.interfaces.rest.like;
+package com.br.mariorusso.adapter.in.rest.like;
 
-import com.br.mariorusso.infra.entity.LikeEntity;
-import com.br.mariorusso.interfaces.rest.usuario.UsuarioDtoOut;
+import com.br.mariorusso.adapter.out.persistence.entity.LikeEntity;
+import com.br.mariorusso.adapter.in.rest.usuario.UsuarioDtoOut;
 
 public record CurtidaForPublicacao(
         Long id,

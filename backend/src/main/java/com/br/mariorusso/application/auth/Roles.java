@@ -1,4 +1,4 @@
-package com.br.mariorusso.adapter.in.auth;
+package com.br.mariorusso.application.auth;
 
 public enum Roles {
     USER("USER"),

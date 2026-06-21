@@ -1,4 +1,4 @@
-package com.br.mariorusso.application;
+package com.br.mariorusso.application.usecase;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.br.mariorusso.domain.model.Publicacao;
 import com.br.mariorusso.application.ports.out.RepositoryCore;
 import com.br.mariorusso.application.ports.in.ServiceCore;
 
-import com.br.mariorusso.adapter.out.infra.repository.PublicacaoRepository;
+import com.br.mariorusso.adapter.out.persistence.repository.PublicacaoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 

@@ -1,9 +1,9 @@
-package com.br.mariorusso.interfaces.rest.perfil;
+package com.br.mariorusso.adapter.in.rest.perfil;
 
 
 import com.br.mariorusso.domain.model.Perfil;
-import com.br.mariorusso.application.ports.in.service.IBuscaPerfilUseCase;
-import com.br.mariorusso.application.ports.in.service.ISalvaPerfilUseCase;
+import com.br.mariorusso.application.ports.in.IBuscaPerfilUseCase;
+import com.br.mariorusso.application.ports.in.ISalvaPerfilUseCase;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

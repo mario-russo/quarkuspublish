@@ -1,4 +1,4 @@
-package com.br.mariorusso.application.ports.out.repository;
+package com.br.mariorusso.application.ports.out;
 
 import com.br.mariorusso.domain.model.Publicacao;
 

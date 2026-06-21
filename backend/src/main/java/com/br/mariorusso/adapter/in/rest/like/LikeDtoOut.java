@@ -1,7 +1,7 @@
-package com.br.mariorusso.interfaces.rest.like;
+package com.br.mariorusso.adapter.in.rest.like;
 
 import com.br.mariorusso.domain.model.Curtida;
-import com.br.mariorusso.interfaces.rest.publicacao.PublicacaoDtoOut;
+import com.br.mariorusso.adapter.in.rest.publicacao.PublicacaoDtoOut;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 import java.time.LocalDateTime;

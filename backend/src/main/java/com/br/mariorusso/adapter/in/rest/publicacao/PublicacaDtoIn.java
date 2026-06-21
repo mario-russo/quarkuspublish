@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.publicacao;
+package com.br.mariorusso.adapter.in.rest.publicacao;
 
 public record PublicacaDtoIn(
     String conteudo,

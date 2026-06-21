@@ -1,13 +1,13 @@
-package com.br.mariorusso.interfaces.rest.publicacao;
+package com.br.mariorusso.adapter.in.rest.publicacao;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.br.mariorusso.domain.model.Publicacao;
-import com.br.mariorusso.interfaces.rest.comentarios.ComentaioDtoOut;
+import com.br.mariorusso.adapter.in.rest.comentarios.ComentaioDtoOut;
 
-import com.br.mariorusso.interfaces.rest.like.LikeDtoOut;
-import com.br.mariorusso.interfaces.rest.usuario.UsuarioDtoOut;
+import com.br.mariorusso.adapter.in.rest.like.LikeDtoOut;
+import com.br.mariorusso.adapter.in.rest.usuario.UsuarioDtoOut;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @RegisterForReflection

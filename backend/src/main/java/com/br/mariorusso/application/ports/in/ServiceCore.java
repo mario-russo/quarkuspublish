@@ -1,4 +1,4 @@
-package com.br.mariorusso.application.ports.in.service;
+package com.br.mariorusso.application.ports.in;
 
 import java.util.List;
 

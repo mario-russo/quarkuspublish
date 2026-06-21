@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.like;
+package com.br.mariorusso.adapter.in.rest.like;
 
 
 

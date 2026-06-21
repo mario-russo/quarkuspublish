@@ -1,4 +1,4 @@
-package com.br.mariorusso.adapter.out.infra.entity;
+package com.br.mariorusso.adapter.out.persistence.entity;
 
 
 

@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.comentarios;
+package com.br.mariorusso.adapter.in.rest.comentarios;
 
 import java.time.LocalDateTime;
 

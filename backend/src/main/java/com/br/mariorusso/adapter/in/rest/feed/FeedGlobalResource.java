@@ -1,9 +1,9 @@
-package com.br.mariorusso.interfaces.rest.feed;
+package com.br.mariorusso.adapter.in.rest.feed;
 
 
 import com.br.mariorusso.domain.model.Publicacao;
-import com.br.mariorusso.application.ports.in.service.IFeedGlobalUseCase;
-import com.br.mariorusso.interfaces.rest.publicacao.PublicacaoDtoOut;
+import com.br.mariorusso.application.ports.in.IFeedGlobalUseCase;
+import com.br.mariorusso.adapter.in.rest.publicacao.PublicacaoDtoOut;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;

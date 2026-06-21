@@ -1,10 +1,10 @@
-package com.br.mariorusso.interfaces.rest.login;
+package com.br.mariorusso.adapter.in.rest.login;
 
-import com.br.mariorusso.application.Login;
-import com.br.mariorusso.auth.JwtService;
+import com.br.mariorusso.application.usecase.Login;
+import com.br.mariorusso.application.auth.JwtService;
 import com.br.mariorusso.domain.model.Usuario;
-import com.br.mariorusso.application.ports.in.service.LoginCore;
-import com.br.mariorusso.infra.entity.UsuarioEntity;
+import com.br.mariorusso.application.ports.in.LoginCore;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
 
 import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;

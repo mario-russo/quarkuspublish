@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.exception;
+package com.br.mariorusso.adapter.in.rest.exception;
 
 public class NotFoundException extends RuntimeException{
 

@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.usuario;
+package com.br.mariorusso.adapter.in.rest.usuario;
 
 public record UsuarioDtos(
     String nome,

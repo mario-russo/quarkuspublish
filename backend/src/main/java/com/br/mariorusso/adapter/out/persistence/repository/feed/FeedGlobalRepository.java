@@ -1,8 +1,8 @@
-package com.br.mariorusso.adapter.out.infra.repository.feed;
+package com.br.mariorusso.adapter.out.persistence.repository.feed;
 
 import com.br.mariorusso.domain.model.Publicacao;
 import com.br.mariorusso.application.ports.out.BuscaFeedGlobalRespository;
-import com.br.mariorusso.adapter.out.infra.entity.PublicacaoEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.PublicacaoEntity;
 import io.quarkus.panache.common.Page;
 import io.quarkus.panache.common.Sort;
 import jakarta.enterprise.context.ApplicationScoped;

@@ -1,4 +1,4 @@
-package com.br.mariorusso.core.model;
+package com.br.mariorusso.domain.model;
 
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.Test;

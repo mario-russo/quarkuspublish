@@ -1,9 +1,9 @@
-package com.br.mariorusso.interfaces.rest.like;
+package com.br.mariorusso.adapter.in.rest.like;
 
 import java.util.List;
 
 import com.br.mariorusso.domain.model.Curtida;
-import com.br.mariorusso.application.ports.in.service.ServiceCore;
+import com.br.mariorusso.application.ports.in.ServiceCore;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;

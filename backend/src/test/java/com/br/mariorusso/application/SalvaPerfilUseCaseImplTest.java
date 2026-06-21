@@ -1,7 +1,8 @@
 package com.br.mariorusso.application;
 
-import com.br.mariorusso.core.model.Perfil;
-import com.br.mariorusso.core.repository.RepositoryCore;
+import com.br.mariorusso.application.usecase.SalvaPerfilUseCaseImpl;
+import com.br.mariorusso.domain.model.Perfil;
+import com.br.mariorusso.application.ports.out.RepositoryCore;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
@@ -9,7 +10,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @QuarkusTest

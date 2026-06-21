@@ -1,4 +1,4 @@
-package com.br.mariorusso.application;
+package com.br.mariorusso.application.usecase;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.login;
+package com.br.mariorusso.adapter.in.rest.login;
 
 import io.quarkus.runtime.annotations.RegisterForReflection;
 

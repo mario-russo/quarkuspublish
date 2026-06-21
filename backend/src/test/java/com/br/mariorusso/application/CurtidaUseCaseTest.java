@@ -1,18 +1,17 @@
 package com.br.mariorusso.application;
 
-import com.br.mariorusso.core.model.Curtida;
-import com.br.mariorusso.core.model.Publicacao;
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.core.repository.RepositoryCore;
-import com.br.mariorusso.core.service.ServiceCore;
-import com.br.mariorusso.infra.entity.LikeEntity;
-import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
+import com.br.mariorusso.application.usecase.LikeUseCase;
+import com.br.mariorusso.domain.model.Curtida;
+import com.br.mariorusso.domain.model.Publicacao;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.application.ports.out.RepositoryCore;
+import com.br.mariorusso.application.ports.in.ServiceCore;
+import com.br.mariorusso.adapter.out.persistence.entity.LikeEntity;
+import com.br.mariorusso.adapter.in.rest.exception.NotFoundException;
 import io.quarkus.test.InjectMock;
-import io.quarkus.test.Mock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 

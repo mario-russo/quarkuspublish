@@ -1,14 +1,15 @@
 package com.br.mariorusso.interfaces.rest.login;
 
 
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.core.service.LoginCore;
-import com.br.mariorusso.core.service.ServiceCore;
-import com.br.mariorusso.infra.entity.UsuarioEntity;
+import com.br.mariorusso.adapter.in.rest.login.LoginDtoIn;
+import com.br.mariorusso.adapter.in.rest.login.RegisterDto;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.application.ports.in.LoginCore;
+import com.br.mariorusso.application.ports.in.ServiceCore;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 

@@ -1,9 +1,9 @@
-package com.br.mariorusso.application;
+package com.br.mariorusso.application.usecase;
 
-import com.br.mariorusso.adapter.in.auth.Roles;
+import com.br.mariorusso.application.auth.Roles;
 import com.br.mariorusso.domain.model.Usuario;
 import com.br.mariorusso.application.ports.in.LoginCore;
-import com.br.mariorusso.adapter.out.infra.entity.UsuarioEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
 
 import com.br.mariorusso.adapter.in.rest.login.RegisterDto;
 import jakarta.enterprise.context.ApplicationScoped;

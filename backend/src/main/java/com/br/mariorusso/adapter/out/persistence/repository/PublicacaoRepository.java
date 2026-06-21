@@ -1,10 +1,10 @@
-package com.br.mariorusso.adapter.out.infra.repository;
+package com.br.mariorusso.adapter.out.persistence.repository;
 
 import java.util.List;
 
 import com.br.mariorusso.domain.model.Publicacao;
 import com.br.mariorusso.application.ports.out.RepositoryCore;
-import com.br.mariorusso.adapter.out.infra.entity.PublicacaoEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.PublicacaoEntity;
 
 import com.br.mariorusso.adapter.in.rest.exception.NotFoundException;
 import jakarta.enterprise.context.ApplicationScoped;

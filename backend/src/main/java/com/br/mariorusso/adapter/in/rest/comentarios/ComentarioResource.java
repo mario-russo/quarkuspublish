@@ -1,15 +1,15 @@
-package com.br.mariorusso.interfaces.rest.comentarios;
+package com.br.mariorusso.adapter.in.rest.comentarios;
 
 import java.time.LocalDateTime;
 
 
-import com.br.mariorusso.application.ComentarioUseCase;
-import com.br.mariorusso.application.PublicacaoUseCase;
-import com.br.mariorusso.application.UsuarioUseCase;
+import com.br.mariorusso.application.usecase.ComentarioUseCase;
+import com.br.mariorusso.application.usecase.PublicacaoUseCase;
+import com.br.mariorusso.application.usecase.UsuarioUseCase;
 import com.br.mariorusso.domain.model.Comentario;
 import com.br.mariorusso.domain.model.Publicacao;
 import com.br.mariorusso.domain.model.Usuario;
-import com.br.mariorusso.application.ports.in.service.ServiceCore;
+import com.br.mariorusso.application.ports.in.ServiceCore;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;

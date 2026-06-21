@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.exception;
+package com.br.mariorusso.adapter.in.rest.exception;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;

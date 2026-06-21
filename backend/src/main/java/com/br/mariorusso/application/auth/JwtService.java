@@ -1,4 +1,4 @@
-package com.br.mariorusso.adapter.in.auth;
+package com.br.mariorusso.application.auth;
 
 import com.br.mariorusso.domain.model.Usuario;
 import io.smallrye.jwt.build.Jwt;

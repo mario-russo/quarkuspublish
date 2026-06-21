@@ -1,9 +1,10 @@
 package com.br.mariorusso.application;
 
-import com.br.mariorusso.core.model.Comentario;
-import com.br.mariorusso.core.model.Publicacao;
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.core.repository.RepositoryCore;
+import com.br.mariorusso.application.usecase.ComentarioUseCase;
+import com.br.mariorusso.domain.model.Comentario;
+import com.br.mariorusso.domain.model.Publicacao;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.application.ports.out.RepositoryCore;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;

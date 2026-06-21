@@ -1,9 +1,9 @@
 package com.br.mariorusso.interfaces.rest.usuario;
 
-import com.br.mariorusso.application.Login;
-import com.br.mariorusso.auth.Roles;
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.infra.entity.UsuarioEntity;
+import com.br.mariorusso.application.usecase.Login;
+import com.br.mariorusso.application.auth.Roles;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
 
 
 public class UserFactoryTest {

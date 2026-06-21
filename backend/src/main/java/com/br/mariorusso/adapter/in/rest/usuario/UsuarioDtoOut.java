@@ -1,4 +1,4 @@
-package com.br.mariorusso.interfaces.rest.usuario;
+package com.br.mariorusso.adapter.in.rest.usuario;
 
 import com.br.mariorusso.domain.model.Usuario;
 import io.quarkus.runtime.annotations.RegisterForReflection;

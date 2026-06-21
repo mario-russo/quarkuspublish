@@ -1,11 +1,11 @@
-package com.br.mariorusso.adapter.out.infra.repository;
+package com.br.mariorusso.adapter.out.persistence.repository;
 
 import java.util.List;
 
 import com.br.mariorusso.domain.model.Comentario;
 import com.br.mariorusso.application.ports.out.RepositoryCore;
-import com.br.mariorusso.adapter.out.infra.entity.ComentarioEntity;
-import com.br.mariorusso.adapter.out.infra.entity.PublicacaoEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.ComentarioEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.PublicacaoEntity;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;

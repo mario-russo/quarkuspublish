@@ -1,10 +1,10 @@
-package com.br.mariorusso.interfaces.rest.usuario;
+package com.br.mariorusso.adapter.in.rest.usuario;
 
 import java.util.List;
 
-import com.br.mariorusso.application.UsuarioUseCase;
+import com.br.mariorusso.application.usecase.UsuarioUseCase;
 import com.br.mariorusso.domain.model.Usuario;
-import com.br.mariorusso.application.ports.in.service.ServiceCore;
+import com.br.mariorusso.application.ports.in.ServiceCore;
 
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;

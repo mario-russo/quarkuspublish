@@ -1,6 +1,6 @@
-package com.br.mariorusso.core.model;
+package com.br.mariorusso.domain.model;
 
-import com.br.mariorusso.auth.Roles;
+import com.br.mariorusso.application.auth.Roles;
 
 import java.util.HashSet;
 import java.util.List;
