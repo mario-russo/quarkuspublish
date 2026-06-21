@@ -1,9 +1,9 @@
 package com.br.mariorusso.interfaces.rest.comentarios;
 
-import com.br.mariorusso.core.model.Comentario;
-import com.br.mariorusso.core.model.Publicacao;
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.core.service.ServiceCore;
+import com.br.mariorusso.domain.model.Comentario;
+import com.br.mariorusso.domain.model.Publicacao;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.application.ports.in.ServiceCore;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;

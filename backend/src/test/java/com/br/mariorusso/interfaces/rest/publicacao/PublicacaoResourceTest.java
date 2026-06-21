@@ -2,8 +2,9 @@ package com.br.mariorusso.interfaces.rest.publicacao;
 
 import com.br.mariorusso.PostgresManagerTest;
 
-import com.br.mariorusso.auth.JwtService;
-import com.br.mariorusso.infra.entity.UsuarioEntity;
+import com.br.mariorusso.adapter.in.rest.publicacao.PublicacaDtoIn;
+import com.br.mariorusso.application.auth.JwtService;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
 import io.quarkus.test.TestTransaction;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;

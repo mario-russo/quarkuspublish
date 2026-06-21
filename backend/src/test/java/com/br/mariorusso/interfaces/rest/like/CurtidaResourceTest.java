@@ -1,16 +1,17 @@
 package com.br.mariorusso.interfaces.rest.like;
 
 import com.br.mariorusso.PostgresManagerTest;
-import com.br.mariorusso.auth.JwtService;
-import com.br.mariorusso.core.model.Curtida;
-import com.br.mariorusso.core.model.Publicacao;
-import com.br.mariorusso.core.model.Usuario;
-import com.br.mariorusso.core.service.ServiceCore;
+import com.br.mariorusso.adapter.in.rest.like.LikeDtoIn;
+import com.br.mariorusso.application.auth.JwtService;
+import com.br.mariorusso.domain.model.Curtida;
+import com.br.mariorusso.domain.model.Publicacao;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.application.ports.in.ServiceCore;
 
-import com.br.mariorusso.infra.entity.UsuarioEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
 
 
-import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
+import com.br.mariorusso.adapter.in.rest.exception.NotFoundException;
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

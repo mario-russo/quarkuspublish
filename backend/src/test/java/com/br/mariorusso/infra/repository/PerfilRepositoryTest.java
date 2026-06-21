@@ -1,9 +1,10 @@
 package com.br.mariorusso.infra.repository;
 
-import com.br.mariorusso.core.model.Perfil;
-import com.br.mariorusso.infra.entity.PerfilEntity;
-import com.br.mariorusso.infra.entity.UsuarioEntity;
-import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
+import com.br.mariorusso.adapter.out.persistence.repository.PerfilRepository;
+import com.br.mariorusso.domain.model.Perfil;
+import com.br.mariorusso.adapter.out.persistence.entity.PerfilEntity;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
+import com.br.mariorusso.adapter.in.rest.exception.NotFoundException;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.mock.PanacheMock; // Usando a biblioteca do seu pom.xml
 import io.quarkus.test.junit.QuarkusTest;

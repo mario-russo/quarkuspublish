@@ -1,7 +1,7 @@
 package com.br.mariorusso.interfaces.rest.publicacao;
 
-import com.br.mariorusso.core.model.Publicacao;
-import com.br.mariorusso.core.model.Usuario;
+import com.br.mariorusso.domain.model.Publicacao;
+import com.br.mariorusso.domain.model.Usuario;
 
 import java.time.LocalDateTime;
 

@@ -11,6 +11,7 @@
         <q-avatar size="48px" class="q-mr-sm">
           <img :src="userAvatar" />
         </q-avatar>
+        <p class="text-weight-bold text-subtitle1 q-ml-sm">{{ userStore?.nome }}</p>
         <q-input
           v-model="postContent"
           placeholder="Começar uma publicação"
@@ -133,9 +134,10 @@ import { ref, computed, nextTick } from 'vue';
 import { useQuasar } from 'quasar';
 import type { QInput } from 'quasar';
 import { salvePublish } from 'src/domain/api/publishService';
+import { useUsuarioStore } from 'src/stores/usuario-store';
 
 const $q = useQuasar();
-
+const userStore = useUsuarioStore().usuario
 const emit = defineEmits<{
   (e: 'new-post', content: string, media?: string): void;
 }>();
@@ -151,7 +153,8 @@ const visibilityOptions = ['Público', 'Amigos', 'Somente eu'];
 const postInput = ref<QInput | null>(null);
 const imageInput = ref<HTMLInputElement | null>(null);
 const videoInput = ref<HTMLInputElement | null>(null);
-const userAvatar = 'https://cdn.quasar.dev/img/avatar.png';
+// const userAvatar = 'https://cdn.quasar.dev/img/avatar.png';
+const userAvatar = computed(() => `https://i.pravatar.cc/150?img=${userStore?.id}`);
 
 // Estilo dinâmico
 const dialogStyle = computed(() => ({

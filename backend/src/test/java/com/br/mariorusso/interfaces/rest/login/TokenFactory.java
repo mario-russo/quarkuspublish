@@ -1,7 +1,7 @@
 package com.br.mariorusso.interfaces.rest.login;
 
-import com.br.mariorusso.auth.Roles;
-import com.br.mariorusso.core.model.Usuario;
+import com.br.mariorusso.application.auth.Roles;
+import com.br.mariorusso.domain.model.Usuario;
 import io.smallrye.jwt.build.Jwt;
 
 import java.time.Duration;

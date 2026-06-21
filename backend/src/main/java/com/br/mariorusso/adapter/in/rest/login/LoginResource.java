@@ -1,0 +1,67 @@
+package com.br.mariorusso.adapter.in.rest.login;
+
+import com.br.mariorusso.application.usecase.Login;
+import com.br.mariorusso.application.auth.JwtService;
+import com.br.mariorusso.domain.model.Usuario;
+import com.br.mariorusso.application.ports.in.LoginCore;
+import com.br.mariorusso.adapter.out.persistence.entity.UsuarioEntity;
+
+import jakarta.annotation.security.PermitAll;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+
+import java.util.Map;
+
+
+@Path("/auth")
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+public class LoginResource {
+
+    final LoginCore<UsuarioEntity> loginUsuario;
+    final JwtService jwtService;
+
+    @Inject
+    public LoginResource(LoginCore<UsuarioEntity> loginUsuario, JwtService jwt) {
+        this.loginUsuario = loginUsuario;
+        this.jwtService = jwt;
+    }
+
+    @POST
+    @Path("/login")
+    @PermitAll
+    public Response login(LoginDtoIn login) {
+        UsuarioEntity usuario = loginUsuario.login(login.email(), login.senha());
+
+        if (usuario == null) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(Map.of("erro", "Email ou senha inválidos"))
+                    .build();
+        }
+        Usuario user = usuario.toDomain();
+
+
+        String token = jwtService.generateToken(user);
+        return Response.ok(Map.of("token", token, "usuario", Map.of(
+                "id", user.getId(),
+                "nome", user.getNome(),
+                "email", user.getEmail()
+
+        ))).build();
+    }
+
+    @Path("/register")
+    @POST()
+    @PermitAll
+    public Response register(RegisterDto dto) {
+        Login login = (Login) loginUsuario;
+        login.register(dto);
+        return Response.ok("Usuário salvo com sucesso!!").build();
+    }
+}

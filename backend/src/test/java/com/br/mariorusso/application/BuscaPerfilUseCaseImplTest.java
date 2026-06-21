@@ -1,8 +1,8 @@
 package com.br.mariorusso.application;
 
-import com.br.mariorusso.core.model.Perfil;
-import com.br.mariorusso.core.repository.RepositoryCore;
-import com.br.mariorusso.interfaces.rest.exception.NotFoundException;
+import com.br.mariorusso.application.usecase.BuscaPerfilUseCaseImpl;
+import com.br.mariorusso.domain.model.Perfil;
+import com.br.mariorusso.application.ports.out.RepositoryCore;
 import io.quarkus.test.InjectMock;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
