@@ -107,12 +107,16 @@ jobs:
         run: |
           mvn -B package -Pnative \
             -Dquarkus.container-image.build=true \
-            -Dquarkus.container-image.push=true \
+            -Dquarkus.container-image.push=false \
             -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:${{ github.sha }}
+
             
+      - name: Enviar Imagem Nativa para o GHCR
+        run: | 
+          docker push "${{ env.IMAGE_NAME }}:${{ github.sha }}"
+        
       - name: 🏷️ Atualizar latest
         run: |
-          docker pull "${{ env.IMAGE_NAME }}:${{ github.sha }}"
           docker tag \
             "${{ env.IMAGE_NAME }}:${{ github.sha }}" \
             "${{ env.IMAGE_NAME }}:latest"
