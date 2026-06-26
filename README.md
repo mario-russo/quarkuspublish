@@ -1,4 +1,4 @@
-# 📘 Quarkus Feed Platform - Full Stack Application com Clean Architecture
+# 📘 Quarkus Feed Platform - Full Stack Application com Ports and Adapters (Hexagonal Architecture)
 
 <!-- BADGES DINÂMICOS (Substitua SEU_USUARIO e SEU_REPOSITORIO pelos seus dados reais do GitHub) -->
 [![CI - Backend](https://github.com/mario-russo/quarkuspublish/actions/workflows/test-build.yaml/badge.svg)](https://github.com/mario-russo/quarkuspublish/actions/workflows/test-build.yaml)
@@ -8,7 +8,7 @@
 ![Vue Version](https://img.shields.io/badge/Vue-3.x-green)
 ![Docker](https://img.shields.io/badge/Docker-Ready-blue)
 
-Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta por uma API backend desenvolvida em Java com Quarkus sob os princípios da *Clean Architecture* e uma aplicação frontend moderna construída em Vue 3. O ecossistema conta com autenticação e autorização via JWT, banco de dados PostgreSQL gerenciado pelo Supabase, testes automatizados robustos e esteiras automatizadas de CI/CD via GitHub Actions com deploy contínuo na Vercel e Render.
+Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta por uma API backend desenvolvida em Java com Quarkus sob os princípios da *Ports and Adapters (Hexagonal Architecture)* e uma aplicação frontend moderna construída em Vue 3. O ecossistema conta com autenticação e autorização via JWT, banco de dados PostgreSQL gerenciado pelo Supabase, testes automatizados robustos e esteiras automatizadas de CI/CD via GitHub Actions com deploy contínuo na Vercel e Render.
 
 ---
 
@@ -20,7 +20,76 @@ Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta
 - **Distribuição de Conteúdo:** Feed global consolidado para exibição das publicações da plataforma.
 
 ---
+### 📊 Resultados dos Testes de Carga (Benchmark)
 
+Os testes foram executados na rota `/feed/global` utilizando a ferramenta `wrk` para avaliar o comportamento do ecossistema gratuito (Vercel + Render + Supabase) sob diferentes níveis de estresse.
+
+#### 📉 Cenário 1: Carga Nominal (Simulação de Usuários Reais)
+* **Configuração:** 2 threads e 10 conexões simultâneas por 30 segundos.
+* **Resultado bruto:**
+```text
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    29.80ms   17.44ms 300.62ms   91.15%
+    Req/Sec   177.81     43.29   260.00     72.17%
+  Latency Distribution
+     50%   24.93ms
+     75%   32.03ms
+     90%   44.65ms
+     99%  101.47ms
+  10639 requests in 30.04s, 17.44MB read
+Requests/sec:    354.20
+Transfer/sec:    594.61KB
+```
+* **Análise:** O sistema respondeu quase instantaneamente. Média de latência excelente de **29.80ms** com vazão estável de **354.20 requisições por segundo**. Zero erros ou timeouts.
+
+#### 🚨 Cenário 2: Alta Concorrência Sem Otimização de Pool (Gargalo do Banco)
+* **Configuração:** 4 threads e 100 conexões simultâneas por 30 segundos batendo direto no backend.
+* **Resultado bruto:**
+```text
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency    56.94ms   26.55ms 433.98ms   75.53%
+    Req/Sec   440.51    170.79   790.00     67.73%
+  Latency Distribution
+     50%   52.40ms
+     75%   71.11ms
+     90%   86.72ms
+     99%  153.54ms
+  23407 requests in 30.03s, 22.42MB read
+  Socket errors: connect 4020, read 100, write 0, timeout 0
+  Non-2xx or 3xx responses: 12175
+Requests/sec:    779.33
+Transfer/sec:    764.35KB
+```
+* **Análise:** O sistema colapsou devido a limitações físicas da infraestrutura. Ocorreram **12.175 erros HTTP (52,01% de falhas)** e 4.020 erros de socket. Enquanto a CPU do Quarkus operava estável em 13% com 60MB de RAM, a memória RAM do Supabase Free saturou e o proxy ativou o modo *Fail-Fast* por estourar o limite de conexões.
+
+#### 🏆 Cenário 3: Resiliência Máxima Com Otimização de Pool
+* **Configuração:** 2 threads e 50 conexões simultâneas por 1 minuto (Pool do Quarkus limitado cirurgicamente para 14: `max-size=14`).
+* **Resultado bruto:**
+```text
+  Thread Stats   Avg      Stdev     Max   +/- Stdev
+    Latency   667.39ms  254.97ms   1.96s    74.00%
+    Req/Sec    40.76     30.92   222.00     86.03%
+  Latency Distribution
+     50%  630.46ms
+     75%  792.52ms
+     90%  966.31ms
+     99%    1.64s 
+  4326 requests in 1.00m, 10.62MB read
+  Socket errors: connect 0, read 0, write 0, timeout 50
+Requests/sec:     72.02
+Transfer/sec:    181.04KB
+```
+* **Análise:** Sucesso absoluto de resiliência. Foram processadas **4.326 requisições com ZERO erros de código (0 Non-2xx)**. Houve apenas 50 timeouts (1,1%) devido ao tempo na fila. O Quarkus atuou como amortecedor, enfileirando o tráfego excedente e repassando de forma ordenada para proteger o banco de dados.
+
+---
+
+### 💡 Conclusão
+
+A combinação de Java Quarkus na Render, Vue 3 na Vercel e PostgreSQL no Supabase entrega um resultado fantástico no plano free para validação de ideias e MVPs. 
+
+A grande lição é que o primeiro ponto de atenção deve ser o banco de dados (especialmente a memória RAM), já que a CPU do backend quase não foi utilizada. Não é uma arquitetura para escala infinita, mas é uma estratégia excelente para rodar um MVP com custo zero, desde que monitorada de perto.
+
+---
 
 ## ⚙️ Tecnologias Utilizadas
 
@@ -49,7 +118,7 @@ Plataforma *full-stack* de publicações com arquitetura ponta a ponta, composta
 ## 🏗️ Arquitetura
 
 
-O projeto é uma rede social desenvolvida em Java com Quarkus, seguindo os princípios de **Clean Architecture** e **Ports and Adapters (Hexagonal Architecture)**. A estrutura foi projetada para manter as regras de negócio desacopladas das tecnologias externas, facilitando manutenção, testes e evolução da aplicação.
+O projeto é uma rede social desenvolvida em Java com Quarkus, seguindo os princípios de  **Ports and Adapters (Hexagonal Architecture)**. A estrutura foi projetada para manter as regras de negócio desacopladas das tecnologias externas, facilitando manutenção, testes e evolução da aplicação.
 
 A arquitetura é dividida em:
 
