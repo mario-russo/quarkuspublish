@@ -106,6 +106,7 @@ jobs:
         working-directory: ./backend
         run: |
           mvn -B package -Pnative \
+           -Dquarkus.native.cpu-kind=x86-64 \
             -Dquarkus.container-image.build=true \
             -Dquarkus.container-image.push=false \
             -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:${{ github.sha }}
