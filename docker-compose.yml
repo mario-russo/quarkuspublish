@@ -20,7 +20,8 @@ services:
       retries: 5
 
   backend:
-    build: ./backend
+    image: ghcr.io/mario-russo/quarkuspublish/backend-quarkus:latest
+    # build: ./backend
     restart: "no"
     depends_on:
       postgres:
@@ -41,9 +42,10 @@ services:
 
   frontend:
     restart: "no"
-    build:
-      context: ./publicacao-frontend
-      dockerfile: Dockerfile.prod
+    image: ghcr.io/mario-russo/quarkuspublish/frontend-vue:latest
+    # build:
+    #   context: ./publicacao-frontend
+    #   dockerfile: Dockerfile.prod
       # args:                            
       #   VITE_API_URL: http://localhost:8080
     environment:                            
