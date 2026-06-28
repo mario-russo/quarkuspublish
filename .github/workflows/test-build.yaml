@@ -1,4 +1,4 @@
-name: Quarkus CI/CD
+name: Quarkus and Quasar CI/CD
 
 on:
   push:
@@ -10,17 +10,12 @@ permissions:
   contents: read
   packages: write
 
-env:
-  IMAGE_NAME: ghcr.io/mario-russo/backend-quarkus
-
 jobs:
-
-# -------------------------------------------------------------
-# TESTES BACKEND (JVM + Postgres)
-# -------------------------------------------------------------
+  # -------------------------------------------------------------
+  # JOB 1: Testes rápidos do Backend (Modo JVM com Banco correto)
+  # -------------------------------------------------------------
   test-backend:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres:15-alpine
@@ -35,8 +30,8 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
-
     env:
+      KIND: postgresql
       DB_USER: mario-russo
       DB_PASSWORD: mario-russo
       DB_URL: jdbc:postgresql://localhost:5432/banco
@@ -45,16 +40,18 @@ jobs:
       PRIVATE_KEY: classpath:/privateKey.pem
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
 
-      - name: Java 21
+      - name: ☕ Configurar Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
 
-      - name: Injetar JWT
+      # CORREÇÃO: Injeta de forma segura no Classpath (recursos do projeto)
+      - name: 🔐 Injetar chaves JWT no Classpath para os testes
         working-directory: ./backend
         env:
           JWT_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
@@ -64,30 +61,30 @@ jobs:
           echo "$JWT_PRIVATE_KEY" > src/main/resources/privateKey.pem
           echo "$JWT_PUBLIC_KEY" > src/main/resources/publicKey.pem
 
-      - name: Testes JVM
+      - name: 🧪 Executar Testes em Modo JVM
         working-directory: ./backend
         run: mvn -B test
 
-
-# -------------------------------------------------------------
-# BUILD BACKEND NATIVO + DOCKER + GHCR
-# -------------------------------------------------------------
   build-backend:
     needs: test-backend
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: ghcr.io/${{ github.repository }}/backend-quarkus
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
 
-      - name: Java 21
+      - name: ☕ Configurar Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: 'temurin'
-          cache: maven
+          cache: 'maven'
 
-      - name: Injetar JWT
+      # CORREÇÃO: Garante as chaves no Classpath para o GraalVM compilar nativo com sucesso
+      - name: 🔐 Injetar chaves JWT no Classpath para o Build Nativo
         working-directory: ./backend
         env:
           JWT_PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
@@ -105,22 +102,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       # CORREÇÃO: -Pnative ativado e empacotamento Docker pelo Quarkus Jib para o GHCR
-      - name: Build Native
+      - name: 🔨 Build Nativo e Push do Backend
         working-directory: ./backend
-        run: mvn -B clean package -Pnative
+        run: |
+          mvn -B package -Pnative \
+            -Dquarkus.container-image.build=true \
+            -Dquarkus.container-image.push=false \
+            -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      - name: Build Docker Image
-        working-directory: ./backend
-        run: |
-          docker build \
-            -f src/main/docker/Dockerfile.native-micro \
-            -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
-            
-      - name: Verificar binário nativo
-        working-directory: ./backend
-        run: |
-          ls -lh target/
-          file target/*-runner
             
       - name: Enviar Imagem Nativa para o GHCR
         run: | 
@@ -128,49 +117,36 @@ jobs:
         
       - name: 🏷️ Atualizar latest
         run: |
-          ls -lh target/
-          test -f target/*-runner
+          docker tag \
+            "${{ env.IMAGE_NAME }}:${{ github.sha }}" \
+            "${{ env.IMAGE_NAME }}:latest"
+          docker push "${{ env.IMAGE_NAME }}:latest"
 
-      - name: Login GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
-
-      - name: Build Docker Image
-        working-directory: ./backend
+      # CORREÇÃO: Dispara o Hook do Render que você configurou
+      - name: 🚀 Disparar Deploy no Render (Backend)
         run: |
-          docker build \
-            -f src/main/docker/Dockerfile.native-micro \
-            -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+          curl -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
 
-      - name: Push Image
-        run: docker push ${{ env.IMAGE_NAME }}:${{ github.sha }}
-
-      - name: Tag Latest
-        run: |
-          docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
-          docker push ${{ env.IMAGE_NAME }}:latest
-
-      - name: Deploy Render
-        run: curl -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
-
-
-# -------------------------------------------------------------
-# FRONTEND
-# -------------------------------------------------------------
   build-frontend:
     needs: test-backend
     if: github.event_name == 'push'
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: 📥 Checkout do código
+        uses: actions/checkout@v4
 
-      - name: Login GHCR
-        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: 🔑 Login no GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build & Push Frontend
+      - name: 🐳 Build e Push do Frontend (Quasar)
         uses: docker/build-push-action@v5
         with:
           context: ./publicacao-frontend
           file: ./publicacao-frontend/Dockerfile.prod
           push: true
-          tags: ghcr.io/mario-russo/frontend-vue:latest
+          tags: ghcr.io/${{ github.repository }}/frontend-vue:latest
