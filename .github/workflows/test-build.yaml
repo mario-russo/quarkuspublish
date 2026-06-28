@@ -68,6 +68,10 @@ jobs:
         working-directory: ./backend
         run: mvn -B test
 
+
+# -------------------------------------------------------------
+# BUILD BACKEND NATIVO + DOCKER + GHCR
+# -------------------------------------------------------------
   build-backend:
     needs: test-backend
     if: github.event_name == 'push'
