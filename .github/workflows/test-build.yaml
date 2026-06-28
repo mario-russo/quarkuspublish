@@ -1,4 +1,4 @@
-name: Quarkus and Quasar CI/CD
+name: Quarkus CI/CD
 
 on:
   push:
@@ -11,7 +11,7 @@ permissions:
   packages: write
 
 env:
-  IMAGE_NAME: ghcr.io/mario-russo/quarkuspublish/backend-quarkus
+  IMAGE_NAME: ghcr.io/mario-russo/backend-quarkus
 
 jobs:
 
@@ -68,10 +68,6 @@ jobs:
         working-directory: ./backend
         run: mvn -B test
 
-
-# -------------------------------------------------------------
-# BUILD BACKEND NATIVO + DOCKER + GHCR
-# -------------------------------------------------------------
   build-backend:
     needs: test-backend
     if: github.event_name == 'push'
@@ -97,7 +93,7 @@ jobs:
           echo "$JWT_PRIVATE_KEY" > src/main/resources/privateKey.pem
           echo "$JWT_PUBLIC_KEY" > src/main/resources/publicKey.pem
 
-      # 🔥 BUILD NATIVO (corrigido CPU compatibility)
+ 
       - name: Build Native
         working-directory: ./backend
         run: |
@@ -108,13 +104,11 @@ jobs:
         working-directory: ./backend
         run: |
           ls -lh target/
-          file target/*-runner
+          test -f target/*-runner
 
-      # 🔐 Login GHCR
       - name: Login GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
 
-      # 🐳 Build Docker (usa Dockerfile Quarkus)
       - name: Build Docker Image
         working-directory: ./backend
         run: |
@@ -122,17 +116,14 @@ jobs:
             -f src/main/docker/Dockerfile.native-micro \
             -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
 
-      # 📤 Push imagem
-      - name: Push image
+      - name: Push Image
         run: docker push ${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-      # 🏷️ latest
-      - name: Tag latest
+      - name: Tag Latest
         run: |
           docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
           docker push ${{ env.IMAGE_NAME }}:latest
 
-      
       - name: Deploy Render
         run: curl -X POST "${{ secrets.RENDER_BACKEND_DEPLOY_HOOK }}"
 
@@ -157,4 +148,4 @@ jobs:
           context: ./publicacao-frontend
           file: ./publicacao-frontend/Dockerfile.prod
           push: true
-          tags: ghcr.io/mario-russo/quarkuspublish/frontend-vue:latest
+          tags: ghcr.io/mario-russo/frontend-vue:latest
