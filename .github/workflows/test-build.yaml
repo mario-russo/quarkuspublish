@@ -101,16 +101,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      # CORREÇÃO: -Pnative ativado e empacotamento Docker pelo Quarkus Jib para o GHCR
+      # CORREÇÃO: -Pnative ativado com v2 (compatível com Xeon E5 v2) e otimização máxima (-O3)
       - name: 🔨 Build Nativo e Push do Backend
         working-directory: ./backend
         run: |
           mvn -B package -Pnative \
+            -Dquarkus.native.additional-build-args=-march=x86-64-v2,-O3 \
             -Dquarkus.container-image.build=true \
             -Dquarkus.container-image.push=false \
             -Dquarkus.container-image.image=${{ env.IMAGE_NAME }}:${{ github.sha }}
 
-            
       - name: Enviar Imagem Nativa para o GHCR
         run: | 
           docker push "${{ env.IMAGE_NAME }}:${{ github.sha }}"
