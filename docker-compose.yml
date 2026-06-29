@@ -1,4 +1,3 @@
-
 services:
   postgres:
     image: postgres:18
@@ -31,14 +30,17 @@ services:
       DB_USER: mario-russo
       DB_PASSWORD: mario-russo
       DB_URL: jdbc:postgresql://postgres:5432/banco
-      PUBLIC_KEY: classpath:/publicKey.pem
-      PRIVATE_KEY: classpath:/privateKey.pem
+      PUBLIC_KEY: /run/secrets/public_key
+      PRIVATE_KEY: /run/secrets/private_key
       ISSUER: mario-russo
       CORS_ORIGINS: http://localhost:9000
     ports:
       - "8080:8080"
     networks:
       - app-network
+    secrets:
+      - public_key
+      - private_key
 
   frontend:
     restart: "no"
@@ -63,3 +65,9 @@ volumes:
 networks:
   app-network:
     driver: bridge
+
+secrets:
+  public_key:
+    file: ./secrets/publicKey.pem
+  private_key:
+    file: ./secrets/privateKey.pem
