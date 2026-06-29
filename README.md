@@ -244,26 +244,34 @@ Após o build inicial, o frontend estará acessível em: **`http://localhost:900
 ## 🔧 Configuração de Variáveis de Ambiente (.env)
 
 ### 1. Variáveis para o Backend
-O backend está configurado para se conectar a um banco de dados relacional. Você deve criar um arquivo `.env` na pasta do backend seguindo o modelo abaixo (caso as chaves não sejam preenchidas, o sistema tentará adotar os valores padrões do projeto). 
+O backend está configurado para se conectar a um banco de dados relacional. Você deve criar um arquivo `.env` na pasta raiz do backend seguindo o modelo abaixo.
 
 O backend local responde na porta **`http://localhost:8080`**.
 
+#### ⚠️ Requisito Obrigatório de Segurança
+Você deve criar uma pasta chamada `secrets` na raiz do projeto contendo as chaves criptográficas:
+* `secrets/publicKey.pem`
+* `secrets/privateKey.pem`
 
+#### Modelo de arquivo `.env` para o Backend:
 ```env
 KIND=postgresql
 DB_USER=mario-russo
 DB_PASSWORD=mario-russo
-DB_URL=jdbc:postgresql://localhost:5432/banco
+DB_URL=jdbc:postgresql://postgres:5432/banco
 
-PUBLIC_KEY=classpath:secrets/publicKey.pem
-PRIVATE_KEY=classpath:secrets/privateKey.pem
+# Caminho absoluto padrão que o Docker utiliza internamente para injetar os secrets
+PUBLIC_KEY=/run/secrets/public_key
+PRIVATE_KEY=/run/secrets/private_key
+ISSUER=mario-russo
+CORS_ORIGINS=http://localhost:9000
 ```
 
 ### 2. Variáveis para o Frontend
-Crie um arquivo `.env` na pasta do frontend apenas para apontar o endereço da API que o Vue 3 deve consumir:
+Crie um arquivo `.env` na pasta raiz do frontend apenas para apontar o endereço da API que o Vue 3 deve consumir:
 
 ```env
-VITE_API_URL=http://localhost:8080/
+VITE_API_URL=http://localhost:8080
 ```
 
 ---

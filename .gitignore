@@ -183,3 +183,4 @@ Desktop.ini
 
 #Chaves para backend
 /backend/secrets/
+/secrets
